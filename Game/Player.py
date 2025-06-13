@@ -15,8 +15,8 @@ class Player(Sprite):
         self.VEL_X = 0
         self.VEL_Y = 0
         self.ACC = a
-        self.FRICTION = 0.1
-        self.MAX_VEL = 5.0
+        self.FRICTION = 0.45
+        self.MAX_VEL = 7.5
 
         self.keys_down = set()
         self.DIR = Direction.RIGHT
@@ -31,14 +31,14 @@ class Player(Sprite):
         self.keys_down.discard(key)
 
     def apply_friction(self):
-        # X
+
         if not (self.is_key_pressed(pygame.K_a) or self.is_key_pressed(pygame.K_d)):
             if abs(self.VEL_X) < self.FRICTION:
                 self.VEL_X = 0
             else:
                 self.VEL_X -= self.FRICTION * (1 if self.VEL_X > 0 else -1)
 
-        # Y
+
         if not (self.is_key_pressed(pygame.K_w) or self.is_key_pressed(pygame.K_s)):
             if abs(self.VEL_Y) < self.FRICTION:
                 self.VEL_Y = 0
