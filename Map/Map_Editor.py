@@ -18,6 +18,7 @@ class MapEditor:
 
         self.selected_tile_index = 1
         self.game_map = Map(self.map_path, self.tile_kinds, self.tile_size)
+        self.center_camera_on_map()
         self.running = True
 
     def run(self):
@@ -66,7 +67,7 @@ class MapEditor:
                 elif event.key == pygame.K_s:
                     self.save_map()
                 elif event.key == pygame.K_l:
-                    self.load_map()
+                    self.load_map_data_from_file(self.map_path)
                 elif event.key == pygame.K_n:
                     width = 100
                     height = 80
@@ -111,28 +112,32 @@ class MapEditor:
     def save_map(self):
         with open(self.map_path, "w") as f:
             for row in self.game_map.raw_map_data:
-                f.write("".join(str(cell) for cell in row) + "\n")
+                line = " ".join(str(cell) for cell in row)
+                f.write(line + "\n")
         print("[MapEditor] Mapa zapisana.")
 
-    def load_map(self):
-        self.game_map = Map(self.map_path, self.tile_kinds, self.tile_size)
-        self.center_camera_on_map()
-        print("[MapEditor] Mapa wczytana.")
+    def load_map_data_from_file(self, path):
+        with open(path, "r") as f:
+            raw_map_data = []
+            for line in f:
+                row = [int(x) for x in line.strip().split()]
+                raw_map_data.append(row)
+        return raw_map_data
 
     def draw(self):
         self.screen.fill((0, 0, 0))
         self.game_map.draw(self.screen, self.camera)
 
-        # Wybrany kafelek w rogu
+
         self.screen.blit(self.tile_kinds[self.selected_tile_index].image, (10, 10))
 
-        # Pasek kafelków na dole ekranu
+
         for i, tile in enumerate(self.tile_kinds):
             x = i * (self.tile_size + 4) + 10
             y = self.screen.get_height() - self.tile_size - 10
             self.screen.blit(tile.image, (x, y))
 
-            # Ramka wokół aktywnego kafelka
+
             if i == self.selected_tile_index:
                 pygame.draw.rect(self.screen, (255, 255, 0), (x, y, self.tile_size, self.tile_size), 2)
 
@@ -152,7 +157,7 @@ tile_image_data = [
     ("ice", "../Images/ice.png", False),            # 8
     ("lava", "../Images/lava.png", False),          # 9
 
-    # Nowe przedmioty
+
     ("bow", "../Images/bow.png", True),             # 10
     ("sword", "../Images/sword.png", True),         # 11
     ("axe", "../Images/axe.png", True),             # 12

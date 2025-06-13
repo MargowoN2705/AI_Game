@@ -31,22 +31,22 @@ class Game:
             Tile("rock_tile", "../Images/rock_tile.png", True),  # 1
             Tile("water", "../Images/water.png", True),  # 2
             Tile("wood", "../Images/wood.png", False),  # 3
-            Tile("tree", "../Images/tree.png", True),  # 4
-            Tile("rock", "../Images/rock.png", True),  # 5
+            Tile("tree", "../Images/grass.png", True),  # 4
+            Tile("rock", "../Images/grass.png", True),  # 5
             Tile("sand", "../Images/sand.png", False),  # 6
             Tile("dirt", "../Images/dirt.png", False),  # 7
             Tile("ice", "../Images/ice.png", False),  # 8
             Tile("lava", "../Images/lava.png", False),  # 9
 
-            Tile("bow", "../Images/bow.png", True),  # 10
-            Tile("sword", "../Images/sword.png", True),  # 11
-            Tile("axe", "../Images/axe.png", True),  # 12
-            Tile("pickaxe", "../Images/pickaxe.png", True),  # 13
+            Tile("bow", "../Images/grass.png", True),  # 10
+            Tile("sword", "../Images/grass.png", True),  # 11
+            Tile("axe", "../Images/grass.png", True),  # 12
+            Tile("pickaxe", "../Images/grass.png", True),  # 13
         ]
 
         self.game_map = Map("../Map/Maps_Storage/map_1.map", self.tile_kinds, 32)
 
-        # Ścieżki obrazów do sprite'ów (jeśli korzystasz ze Sprite'ów do obiektów)
+
         tree_image_path = "../Images/tree.png"
         rock_image_path = "../Images/rock.png"
         bow_image_path = "../Images/bow.png"
@@ -54,13 +54,14 @@ class Game:
         axe_image_path = "../Images/axe.png"
         pickaxe_image_path = "../Images/pickaxe.png"
 
+
         tile_size = self.game_map.tile_size
 
         for y, row in enumerate(self.game_map.tiles):
             for x, tile in enumerate(row):
                 tile_id = self.game_map.raw_map_data[y][x]
                 if tile_id == 4:
-                    Sprite(tree_image_path, x * tile_size, y * tile_size)
+                    Sprite(tree_image_path, x * tile_size, y * tile_size, offset_y=96)
                 elif tile_id == 5:
                     Sprite(rock_image_path, x * tile_size, y * tile_size)
                 elif tile_id == 10:
@@ -72,7 +73,13 @@ class Game:
                 elif tile_id == 13:
                     Sprite(pickaxe_image_path, x * tile_size, y * tile_size)
 
-        self.player = Player("../Images/player.png", 100, 100, a=0.5, game_map=self.game_map)
+        map_width_px = len(self.game_map.raw_map_data[0]) * 32 #TODO zmienic 32 na tile_size, aby zbyla zmienna, dynamiczna
+        map_height_px = len(self.game_map.raw_map_data) * 32
+
+        player_start_x = map_width_px // 2
+        player_start_y = map_height_px // 2
+
+        self.player = Player("../Images/DarkRanger.png", player_start_x, player_start_y, a=0.5, game_map=self.game_map) #TODO Ogarnac bounding boxy
 
         self.Reset_Game()
 
@@ -100,7 +107,12 @@ class Game:
                     self.keys_down.discard(event.key)
                     self.player.handle_key_up(event.key)
 
-            self.player.Update(self.camera)
+
+            dt = clock.tick(60) / 1000
+            self.player.Update(self.camera,dt)
+
+            self.player.draw(self.screen, self.camera)
+
             self.screen.fill(self.clear_color)
 
             for y, row in enumerate(self.game_map.tiles):

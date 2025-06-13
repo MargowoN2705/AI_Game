@@ -8,6 +8,7 @@ class Tile:
         self.is_solid = is_solid
 
 class Map:
+
     def __init__(self, map_file, tile_kinds, tile_size):
         self.tile_size = tile_size
         self.tiles = []
@@ -20,9 +21,11 @@ class Map:
             row = []
             raw_row = []
             line = line.strip()
-            for x, char in enumerate(line):
-                if char.isdigit():
-                    index = int(char)
+
+            parts = line.split()
+            for x, part in enumerate(parts):
+                if part.isdigit():
+                    index = int(part)
                     tile_kind = tile_kinds[min(index, len(tile_kinds) - 1)]
                     row.append(tile_kind)
                     raw_row.append(index)

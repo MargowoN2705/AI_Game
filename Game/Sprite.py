@@ -4,7 +4,7 @@ sprites = []
 loaded = {}
 
 class Sprite:
-    def __init__(self, image, x, y):
+    def __init__(self, image, x, y, offset_y=0):
         if image in loaded:
             self.image = loaded[image]
         else:
@@ -13,13 +13,16 @@ class Sprite:
 
         self.x = x
         self.y = y
+        self.offset_y = offset_y
 
         sprites.append(self)
+
 
     def destroy(self):
         if self in sprites:
             sprites.remove(self)
 
-    def draw(self, screen,camera):
-        screen.blit(self.image, (self.x-camera.camera.x ,self.y-camera.camera.y))
+    def draw(self, screen, camera):
+        screen.blit(self.image, (self.x - camera.camera.x, self.y - camera.camera.y - self.offset_y))
+
 
