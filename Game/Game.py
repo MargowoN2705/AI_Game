@@ -153,6 +153,12 @@ class Game:
                         self.check_chest_interactions()
                         self.check_tree_interactions()
 
+                    if event.key == pygame.K_UP:
+                        self.camera.zoom = min(4.0, self.camera.zoom + 0.25)
+
+                    if event.key == pygame.K_DOWN:
+                        self.camera.zoom = max(0.25, self.camera.zoom - 0.25)
+
             dt = clock.tick(60) / 1000
 
             self.screen.fill(self.clear_color)  # <-- czyść ekran na samym początku!
