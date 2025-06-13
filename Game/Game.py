@@ -21,33 +21,27 @@ class Game:
         self.keys_down = set()
         self.GAME_SPEED = 60
 
-
         self.tile_kinds = [
             Tile("grass", "../Images/grass.png", False),
             Tile("wall", "../Images/rock.png", True),
             Tile("water", "../Images/water.png", True),
             Tile("wood", "../Images/wood.png", False),
-            Tile("sand", "../Images/sand.png", False),
+            Tile("grass", "../Images/grass.png", False),
         ]
-
 
         self.game_map = Map("../Map/Maps_Storage/map_1.map", self.tile_kinds, 32)
 
+
+
         tree_image_path = "../Images/tree.png"
-        num_trees = 15
         tile_size = self.game_map.tile_size
 
-        for _ in range(num_trees):
-            while True:
-                x = random.randint(0, len(self.game_map.tiles[0]) - 1)
-                y = random.randint(0, len(self.game_map.tiles) - 1)
-                tile = self.game_map.tiles[y][x]
+        for y, row in enumerate(self.game_map.tiles):
+            for x, tile in enumerate(row):
+                if self.game_map.raw_map_data[y][x] == 4:
+                    Sprite(tree_image_path, x * tile_size, y * tile_size)  # ← sprite drzewa
 
-                if tile.name == "grass":
-                    Sprite(tree_image_path, x * tile_size, y * tile_size)
-                    break
-
-        self.player = Player("../Images/player.png", 100, 100, a=0.5)
+        self.player = Player("../Images/player.png", 100, 100, a=0.5,game_map=self.game_map)
 
         self.Reset_Game()
 

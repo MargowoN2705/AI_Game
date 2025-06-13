@@ -9,7 +9,7 @@ class Direction(Enum):
     RIGHT = 3
 
 class Player(Sprite):
-    def __init__(self, image, x, y, a):
+    def __init__(self, image, x, y, a, game_map):
         super().__init__(image, x, y)
 
         self.VEL_X = 0
@@ -17,10 +17,10 @@ class Player(Sprite):
         self.ACC = a
         self.FRICTION = 0.2
         self.MAX_VEL = 4
-
+        self.game_map = game_map
         self.keys_down = set()
         self.DIR = Direction.RIGHT
-
+        self.player_rect = pygame.Rect(int(self.x), int(self.y), 16, 32)
     def is_key_pressed(self, key):
         return key in self.keys_down
 
@@ -72,9 +72,28 @@ class Player(Sprite):
 
     def get_Position(self):
         dx, dy = self.get_Movement()
-        new_x = self.x + dx
-        new_y = self.y + dy
-        return new_x, new_y
+
+
+        new_rect = self.player_rect.move(dx, dy)
+
+        collision = False
+        for y, row in enumerate(self.game_map.tiles):
+            for x, tile in enumerate(row):
+                if tile.is_solid:
+                    tile_rect = pygame.Rect(x * self.game_map.tile_size, y * self.game_map.tile_size,
+                                            self.game_map.tile_size, self.game_map.tile_size)
+                    if new_rect.colliderect(tile_rect):
+                        collision = True
+                        break
+            if collision:
+                break
+
+        if not collision:
+            return self.x + dx, self.y + dy
+        else:
+            return self.x, self.y
 
     def Update(self):
         self.x, self.y = self.get_Position()
+        self.player_rect.topleft = (int(self.x), int(self.y))
+
