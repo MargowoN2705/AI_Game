@@ -15,8 +15,8 @@ class Player(Sprite):
         self.VEL_X = 0
         self.VEL_Y = 0
         self.ACC = a
-        self.FRICTION = 0.45
-        self.MAX_VEL = 7.5
+        self.FRICTION = 0.2
+        self.MAX_VEL = 4
 
         self.keys_down = set()
         self.DIR = Direction.RIGHT
