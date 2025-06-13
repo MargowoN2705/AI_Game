@@ -28,9 +28,10 @@ class Game:
 
         self.tile_kinds = [
             Tile("grass", "../Images/grass.png", False),
-            Tile("rock", "../Images/rock.png", True),
+            Tile("rock", "../Images/rock_tile.png", True),
             Tile("water", "../Images/water.png", True),
             Tile("wood", "../Images/wood.png", False),
+            Tile("grass", "../Images/grass.png", True),
             Tile("grass", "../Images/grass.png", False),
             Tile("sand", "../Images/sand.png", False),
             Tile("dirt", "../Images/dirt.png", False),
@@ -41,12 +42,16 @@ class Game:
 
 
         tree_image_path = "../Images/tree.png"
+        rock_image_path = "../Images/rock.png"
+
         tile_size = self.game_map.tile_size
 
         for y, row in enumerate(self.game_map.tiles):
             for x, tile in enumerate(row):
                 if self.game_map.raw_map_data[y][x] == 4:
-                    Sprite(tree_image_path, x * tile_size, y * tile_size)  # ← sprite drzewa
+                    Sprite(tree_image_path, x * tile_size, y * tile_size)
+                elif self.game_map.raw_map_data[y][x] == 5:
+                    Sprite(rock_image_path, x * tile_size, y * tile_size)
 
         self.player = Player("../Images/player.png", 100, 100, a=0.5,game_map=self.game_map)
 
