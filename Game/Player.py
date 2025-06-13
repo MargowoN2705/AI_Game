@@ -1,5 +1,5 @@
 import pygame
-from Sprite import Sprite
+from sprite import Sprite
 from enum import Enum
 
 
@@ -62,7 +62,7 @@ class Player(Sprite):
         self.VEL_X = max(-self.MAX_VEL, min(self.VEL_X, self.MAX_VEL))
         self.VEL_Y = max(-self.MAX_VEL, min(self.VEL_Y, self.MAX_VEL))
 
-    def get_Movement(self):
+    def get_movement(self):
         acc = self.ACC
 
         if self.is_key_pressed(pygame.K_w):
@@ -86,8 +86,8 @@ class Player(Sprite):
 
         return self.VEL_X, self.VEL_Y
 
-    def get_Position(self):
-        dx, dy = self.get_Movement()
+    def get_position(self):
+        dx, dy = self.get_movement()
 
 
         new_rect = self.rect.move(dx, dy)
@@ -138,8 +138,8 @@ class Player(Sprite):
 
         surface.blit(frame_image, screen_pos)
 
-    def Update(self, camera,dt):
-        self.x, self.y = self.get_Position()
+    def update(self, camera, dt):
+        self.x, self.y = self.get_position()
         self.rect.topleft = (int(self.x), int(self.y))
         camera.camera.x = self.x - (camera.camera.width / camera.zoom) / 2
         camera.camera.y = self.y - (camera.camera.height / camera.zoom) / 2
