@@ -4,29 +4,36 @@ import random
 from Player import Player
 from Sprite import sprites,Sprite
 from Map.Map import Map,Tile
+from camera import Camera
 
 
 class Game:
 
     def __init__(self):
         pygame.init()
-        pygame.display.set_caption("GameAI")
 
-        screen_info = pygame.display.Info()
-        width, height = screen_info.current_w, screen_info.current_h
-        screen = pygame.display.set_mode((width, height), FULLSCREEN)
 
-        self.clear_color = (30, 150, 50)
-        self.screen = screen
+        self.camera = Camera()
+
+        self.clear_color = (0, 0, 0)
+
+        infoObject = pygame.display.Info()
+        screen_width = infoObject.current_w
+        screen_height = infoObject.current_h
+
+        self.screen = self.camera.create_screen(screen_width, screen_height, 'GameAI', pygame.FULLSCREEN)
+
         self.keys_down = set()
         self.GAME_SPEED = 60
 
         self.tile_kinds = [
             Tile("grass", "../Images/grass.png", False),
-            Tile("wall", "../Images/rock.png", True),
+            Tile("rock", "../Images/rock.png", True),
             Tile("water", "../Images/water.png", True),
             Tile("wood", "../Images/wood.png", False),
             Tile("grass", "../Images/grass.png", False),
+            Tile("sand", "../Images/sand.png", False),
+            Tile("dirt", "../Images/dirt.png", False),
         ]
 
         self.game_map = Map("../Map/Maps_Storage/map_1.map", self.tile_kinds, 32)
@@ -69,17 +76,17 @@ class Game:
                     self.keys_down.discard(event.key)
                     self.player.handle_key_up(event.key)
 
-            self.player.Update()
+            self.player.Update(self.camera)
             self.screen.fill(self.clear_color)
-
 
             for y, row in enumerate(self.game_map.tiles):
                 for x, tile in enumerate(row):
-                    self.screen.blit(tile.image, (x * self.game_map.tile_size, y * self.game_map.tile_size))
-
+                    screen_x = x * self.game_map.tile_size - self.camera.camera.x
+                    screen_y = y * self.game_map.tile_size - self.camera.camera.y
+                    self.screen.blit(tile.image, (screen_x, screen_y))
 
             for s in sprites:
-                s.draw(self.screen)
+                s.draw(self.screen,self.camera)
 
             pygame.display.flip()
 

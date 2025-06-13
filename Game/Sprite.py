@@ -20,6 +20,6 @@ class Sprite:
         if self in sprites:
             sprites.remove(self)
 
-    def draw(self, surface):
-        surface.blit(self.image, (self.x, self.y))
+    def draw(self, screen,camera):
+        screen.blit(self.image, (self.x-camera.camera.x ,self.y-camera.camera.y))
 

@@ -1,5 +1,6 @@
 import pygame
 
+
 class Tile:
     def __init__(self, name, image, is_solid):
         self.name = name
@@ -32,11 +33,11 @@ class Map:
             self.tiles.append(row)
             self.raw_map_data.append(raw_row)
 
-    def draw(self, surface):
+    def draw(self, surface,camera):
         for y, row in enumerate(self.tiles):
             for x, tile in enumerate(row):
-                pos_x = x * self.tile_size
-                pos_y = y * self.tile_size
+                pos_x = x * self.tile_size - camera.camera.x
+                pos_y = y * self.tile_size - camera.camera.y
                 surface.blit(tile.image, (pos_x, pos_y))
 
     def check_collision(self, rect, dx, dy):

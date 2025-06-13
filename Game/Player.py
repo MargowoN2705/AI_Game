@@ -2,6 +2,7 @@ import pygame
 from Sprite import Sprite
 from enum import Enum
 
+
 class Direction(Enum):
     UP = 0
     DOWN = 1
@@ -93,7 +94,12 @@ class Player(Sprite):
         else:
             return self.x, self.y
 
-    def Update(self):
+    def Update(self, camera):
         self.x, self.y = self.get_Position()
         self.player_rect.topleft = (int(self.x), int(self.y))
+        camera.camera.x = self.x - camera.camera.width / 2
+        camera.camera.y = self.y - camera.camera.height / 2
+
+
+
 
