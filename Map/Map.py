@@ -4,8 +4,34 @@ import pygame
 class Tile:
     def __init__(self, name, image, is_solid):
         self.name = name
-        self.image = pygame.image.load(image).convert_alpha()
+        if isinstance(image, str):
+            self.image = pygame.image.load(image).convert_alpha()
+        else:
+            # image jest już pygame.Surface
+            self.image = image
         self.is_solid = is_solid
+
+class ChestTile(Tile):
+    def __init__(self, name, image_path, is_solid, position):
+
+        full_image = pygame.image.load(image_path).convert_alpha()
+
+
+        self.closed_img = full_image.subsurface(pygame.Rect(0, 0, 32, 32))
+        self.open_img = full_image.subsurface(pygame.Rect(32, 0, 32, 32))
+
+
+        super().__init__(name, self.closed_img, is_solid)
+
+        self.is_open = False
+        self.position = position
+        self.rect = pygame.Rect(position[0], position[1], 32, 32)
+
+    def toggle(self):
+        self.is_open = not self.is_open
+        self.image = self.open_img if self.is_open else self.closed_img
+        print(f"Chest toggled: {'open' if self.is_open else 'closed'}")
+
 
 class Map:
 

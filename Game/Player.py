@@ -21,7 +21,7 @@ class Player(Sprite):
         self.game_map = game_map
         self.keys_down = set()
         self.DIR = Direction.RIGHT
-        self.player_rect = pygame.Rect(int(self.x), int(self.y), 25, 25)
+        self.rect = pygame.Rect(int(self.x), int(self.y), 25, 25)
 
         #for Animation
         self.sprite_sheet = pygame.image.load(image).convert_alpha()
@@ -90,7 +90,7 @@ class Player(Sprite):
         dx, dy = self.get_Movement()
 
 
-        new_rect = self.player_rect.move(dx, dy)
+        new_rect = self.rect.move(dx, dy)
 
         collision = False
         for y, row in enumerate(self.game_map.tiles):
@@ -125,23 +125,24 @@ class Player(Sprite):
             self.frame_width,
             self.frame_height
         )
-
         frame_image = self.sprite_sheet.subsurface(frame_rect)
 
-        # Odbij tylko jeśli postać patrzy w lewo
         if self.DIR == Direction.LEFT:
             frame_image = pygame.transform.flip(frame_image, True, False)
 
-        screen_x = self.x - camera.camera.x
-        screen_y = self.y - camera.camera.y
+        # Skalowanie obrazka
+        frame_image = camera.apply_surface(frame_image)
 
-        surface.blit(frame_image, (int(screen_x), int(screen_y)))
+        # Pozycja na ekranie z uwzględnieniem kamery i zoomu
+        screen_pos = camera.apply((self.x, self.y))
+
+        surface.blit(frame_image, screen_pos)
 
     def Update(self, camera,dt):
         self.x, self.y = self.get_Position()
-        self.player_rect.topleft = (int(self.x), int(self.y))
-        camera.camera.x = self.x - camera.camera.width / 2
-        camera.camera.y = self.y - camera.camera.height / 2
+        self.rect.topleft = (int(self.x), int(self.y))
+        camera.camera.x = self.x - (camera.camera.width / camera.zoom) / 2
+        camera.camera.y = self.y - (camera.camera.height / camera.zoom) / 2
 
         self.update_animation(dt)
 

@@ -23,6 +23,15 @@ class Sprite:
             sprites.remove(self)
 
     def draw(self, screen, camera):
-        screen.blit(self.image, (self.x - camera.camera.x, self.y - camera.camera.y - self.offset_y))
+        pos = (self.x, self.y - self.offset_y)
+        pos = camera.apply(pos)  # przesuwamy i skalujemy pozycję
+
+        scaled_image = camera.apply_surface(self.image)  # skalujemy obrazek
+
+        screen.blit(scaled_image, pos)
+
+    def change_image(self, new_image_path):
+        self.image = pygame.image.load(new_image_path).convert_alpha()
+
 
 
