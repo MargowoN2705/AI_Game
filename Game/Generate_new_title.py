@@ -26,7 +26,7 @@ class ImageProcessor:
         print(f"Saved image to {filename}")
 
 
-    def proces_New_Image(self,images_folder="../Images/"):
+    def proces_New_Image(self,images_folder="../images/"):
 
         grass_inverted = self.invert_colors(self.grass_img)  # odwrócone kolory trawy
         water_high_contrast = self.change_contrast(self.water_img, 1.5)  # wysoki kontrast wody
@@ -81,11 +81,11 @@ class ImageProcessor:
 pygame.init()
 pygame.display.set_mode((1, 1))  # Minimalne okno, potrzebne dla convert_alpha()
 
-grass_img = pygame.image.load("../Images/grass.png").convert_alpha()
-water_img = pygame.image.load("../Images/water.png").convert_alpha()
-wood_img = pygame.image.load("../Images/wood.png").convert_alpha()
-dirt_img = pygame.image.load("../Images/dirt.png").convert_alpha()
-rock_tile_img = pygame.image.load("../Images/rock_tile.png").convert_alpha()
+grass_img = pygame.image.load("../images/grass.png").convert_alpha()
+water_img = pygame.image.load("../images/water.png").convert_alpha()
+wood_img = pygame.image.load("../images/wood.png").convert_alpha()
+dirt_img = pygame.image.load("../images/dirt.png").convert_alpha()
+rock_tile_img = pygame.image.load("../images/rock_tile.png").convert_alpha()
 
 procesor = ImageProcessor(grass_img, water_img, wood_img, dirt_img, rock_tile_img)
 procesor.proces_New_Image()
