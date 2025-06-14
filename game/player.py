@@ -1,5 +1,5 @@
 import pygame
-from sprite import Sprite
+from .sprite import Sprite
 from enum import Enum
 
 
@@ -15,9 +15,9 @@ class Player(Sprite):
 
         self.VEL_X = 0
         self.VEL_Y = 0
-        self.ACC = a
-        self.FRICTION = 0.2
-        self.MAX_VEL = 4
+        self.ACC = 5
+        self.FRICTION = 1
+        self.MAX_VEL = 5
         self.game_map = game_map
         self.keys_down = set()
         self.DIR = Direction.RIGHT

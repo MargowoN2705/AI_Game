@@ -1,11 +1,10 @@
 import pygame
 from pygame import FULLSCREEN
 import random
-from player import Player
-from sprite import sprites,Sprite
+from .player import Player
+from .sprite import sprites,Sprite
 from game_map.game_map import Map,Tile,ChestTile
-from camera import Camera
-
+from .camera import Camera
 
 
 class Game:

@@ -1,5 +1,5 @@
 import pygame
-from game_map import Map, Tile
+from .game_map import Map, Tile
 from game.camera import Camera
 
 class MapEditor:

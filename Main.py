@@ -1,12 +1,12 @@
+import pygame
+
 from game.game import Game
 from game_map.map_editor import MapEditor
-import pygame
 
 
 #TODO Naprwic Maina
 
-
-if __name__ == "__main__":
+def main():
     print ("Gra: 1.")
     print ('Edytor: 2')
     if input() == 1 :
@@ -62,3 +62,6 @@ if __name__ == "__main__":
         )
 
         editor.run()
+
+if __name__ == "__main__":
+    main()
