@@ -89,25 +89,51 @@ class Player(Sprite):
     def get_position(self):
         dx, dy = self.get_movement()
 
+        # --- KOLIZJA OSOBNO DLA X ---
+        new_x = self.x + dx
+        new_rect_x = self.rect.copy()
+        new_rect_x.x = int(new_x)
 
-        new_rect = self.rect.move(dx, dy)
-
-        collision = False
+        collision_x = False
         for y, row in enumerate(self.game_map.tiles):
-            for x, tile in enumerate(row):
+            for x_, tile in enumerate(row):
                 if tile.is_solid:
-                    tile_rect = pygame.Rect(x * self.game_map.tile_size, y * self.game_map.tile_size,
+                    tile_rect = pygame.Rect(x_ * self.game_map.tile_size, y * self.game_map.tile_size,
                                             self.game_map.tile_size, self.game_map.tile_size)
-                    if new_rect.colliderect(tile_rect):
-                        collision = True
+                    if new_rect_x.colliderect(tile_rect):
+                        collision_x = True
                         break
-            if collision:
+            if collision_x:
                 break
 
-        if not collision:
-            return self.x + dx, self.y + dy
-        else:
-            return self.x, self.y
+        if not collision_x:
+            self.x = new_x
+
+        # --- KOLIZJA OSOBNO DLA Y ---
+        new_y = self.y + dy
+        new_rect_y = self.rect.copy()
+        new_rect_y.y = int(new_y)
+
+        collision_y = False
+        for y, row in enumerate(self.game_map.tiles):
+            for x_, tile in enumerate(row):
+                if tile.is_solid:
+                    tile_rect = pygame.Rect(x_ * self.game_map.tile_size, y * self.game_map.tile_size,
+                                            self.game_map.tile_size, self.game_map.tile_size)
+                    if new_rect_y.colliderect(tile_rect):
+                        collision_y = True
+                        break
+            if collision_y:
+                break
+
+        if not collision_y:
+            self.y = new_y
+
+        # Zaktualizuj rect
+        self.rect.x = int(self.x)
+        self.rect.y = int(self.y)
+
+        return self.x, self.y
 
     def update_animation(self, dt):
         if self.moving:
