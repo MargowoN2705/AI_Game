@@ -1,7 +1,7 @@
 import pygame
 from pygame import FULLSCREEN
 import random
-from player import Player
+from player import Playerasddsaa
 from sprite import sprites,Sprite
 from game_map.game_map import Map,Tile,ChestTile
 from camera import Camera
