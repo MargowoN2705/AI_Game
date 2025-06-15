@@ -34,6 +34,8 @@ class Player(Sprite):
         self.frame_timer = 0
         self.moving = False
 
+        self.inventory = []
+
     def is_key_pressed(self, key):
         return key in self.keys_down
 
@@ -172,6 +174,13 @@ class Player(Sprite):
 
         self.update_animation(dt)
 
+    def pick_up(self, item):
+        self.inventory.append(item)
+        # usuń item z mapy jeśli trzeba
+
+    def drop_item(self, item, game_map):
+        self.inventory.remove(item)
+        game_map.spawn_item(item, self.x, self.y)  # umieść item na mapie
 
 
 
