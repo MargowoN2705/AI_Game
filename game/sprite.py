@@ -5,17 +5,19 @@ loaded = {}
 
 class Sprite:
     def __init__(self, image, x, y, offset_y=0):
-        if image in loaded:
-            self.image = loaded[image]
+        if isinstance(image, pygame.Surface):
+            self.image = image
         else:
-            self.image = pygame.image.load(image).convert_alpha()
-            loaded[image] = self.image
-
+            if image in loaded:
+                self.image = loaded[image]
+            else:
+                self.image = pygame.image.load(image).convert_alpha()
+                loaded[image] = self.image
         self.x = x
         self.y = y
         self.offset_y = offset_y
-
         sprites.append(self)
+
 
 
     def destroy(self):
