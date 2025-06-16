@@ -6,6 +6,8 @@ from .sprite import sprites,Sprite
 from game_map.game_map import Map,Tile,ChestTile
 from .camera import Camera
 from config import get_asset_path
+from .item import Item, ItemEntity, Inventory
+
 
 class Game:
 
@@ -127,6 +129,19 @@ class Game:
 
         self.player = Player(get_asset_path("../images/DarkRanger.png"), player_start_x, player_start_y, a=0.5, game_map=self.game_map) #TODO Ogarnac bounding boxy
 
+
+        # Przedmioty
+        self.items = [
+            Item("sword", get_asset_path("sword.png")),
+            # Item("axe", "axe.png"),
+        ]
+
+        # Przedmioty w świecie
+        self.item_entities = [
+            ItemEntity(self.items[0], self.player.x, self.player.y),
+            # ItemEntity(self.items[1], (10, 3)),
+        ]
+
         self.reset_game()
 
     def check_chest_interactions(self):
@@ -176,6 +191,34 @@ class Game:
                     if event.key == pygame.K_DOWN:
                         self.camera.zoom = max(0.25, self.camera.zoom - 0.25)
 
+                    if event.key == pygame.K_q:
+                        dropped_item = self.player.inventory.drop_item()
+                        if dropped_item:
+                            self.item_entities.append(ItemEntity(dropped_item, self.player.x, self.player.y))
+
+
+                    if event.key == pygame.K_e:
+                        for entity in self.item_entities:
+                            if not entity.picked_up and self.player.rect.colliderect(entity.rect):
+                                if self.player.inventory.add_item(entity.item):
+                                    entity.picked_up = True
+                                break
+
+                    if event.key == pygame.K_1:
+                        self.player.inventory.selected_index = 0
+
+                    if event.key == pygame.K_2:
+                        self.player.inventory.selected_index = 1
+
+                    if event.key == pygame.K_3:
+                        self.player.inventory.selected_index = 2
+
+                    if event.key == pygame.K_4:
+                        self.player.inventory.selected_index = 3
+
+                    if event.key == pygame.K_5:
+                        self.player.inventory.selected_index = 4
+
             dt = clock.tick(60) / 1000
 
             self.screen.fill(self.clear_color)  # <-- czyść ekran na samym początku!
@@ -190,9 +233,15 @@ class Game:
                     self.screen.blit(tile_image, screen_pos)
 
             for s in sprites:
+                if hasattr(s, "picked_up") and s.picked_up:
+                    continue
                 s.draw(self.screen, self.camera)
 
+
+
             self.player.draw(self.screen, self.camera)  # Rysuj gracza **raz** na końcu
+            self.player.draw_inventory(self.screen, self.player.inventory)
+
 
             pygame.display.flip()
 

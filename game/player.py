@@ -1,6 +1,7 @@
 import pygame
 from .sprite import Sprite
 from enum import Enum
+from .item import Inventory
 
 
 class Direction(Enum):
@@ -22,6 +23,7 @@ class Player(Sprite):
         self.keys_down = set()
         self.DIR = Direction.RIGHT
         self.rect = pygame.Rect(int(self.x), int(self.y), 25, 25)
+        self.inventory = Inventory()
 
         #for Animation
         self.sprite_sheet = pygame.image.load(image).convert_alpha()
