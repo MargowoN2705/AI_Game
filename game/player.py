@@ -25,6 +25,12 @@ class Player(Sprite):
         self.rect = pygame.Rect(int(self.x), int(self.y), 25, 25)
         self.inventory = Inventory()
 
+        # health and mana points
+        self.max_hp = 100
+        self.hp = 100
+        self.max_mp = 50
+        self.mp = 50
+
         #for Animation
         self.sprite_sheet = pygame.image.load(image).convert_alpha()
         self.frame_width = 32
@@ -164,6 +170,9 @@ class Player(Sprite):
         # Pozycja na ekranie z uwzględnieniem kamery i zoomu
         screen_pos = camera.apply((self.x, self.y))
 
+        #self.draw_health_bar(surface, camera)
+        #self.draw_mana_bar(surface, camera)
+
         surface.blit(frame_image, screen_pos)
 
     def update(self, dt):
@@ -173,3 +182,19 @@ class Player(Sprite):
 
 
 
+    '''def draw_health_bar(self, surface, camera):
+        # Obliczamy pozycję nad graczem na ekranie (z uwzględnieniem kamery)
+        screen_x, screen_y = camera.apply((self.x, self.y))
+
+        # Pozycja paska trochę nad graczem
+        bar_width = 40
+        bar_height = 6
+        bar_x = screen_x + (self.rect.width // 2) - (bar_width // 2)
+        bar_y = screen_y - 15  # 15 pikseli nad graczem
+
+        # Tło paska (szare)
+        pygame.draw.rect(surface, (50, 50, 50), (bar_x, bar_y, bar_width, bar_height))
+
+        # Pasek życia (czerwony)
+        hp_ratio = self.hp / self.max_hp
+        pygame.draw.rect(surface, (255, 0, 0), (bar_x, bar_y, int(bar_width * hp_ratio), bar_height))'''

@@ -10,7 +10,7 @@ class TeamManager:
         self.all_agents = []
 
         # Dodaj gracza do team A
-        player.team_id = 0  # <- ustaw mu team_id
+        player.team_id = 0
         self.team_a.append(player)
 
         # Spawn Team A
