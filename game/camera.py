@@ -21,3 +21,12 @@ class Camera:
         w = int(surface.get_width() * self.zoom)
         h = int(surface.get_height() * self.zoom)
         return pygame.transform.scale(surface, (w, h))
+
+    def follow(self, target):
+        self.target = target
+
+    def update(self):
+        if self.target:
+            # Przesuwanie kamery wzgledem target
+            self.camera.x = int(self.target.x - (self.camera.width / self.zoom) / 2)
+            self.camera.y = int(self.target.y - (self.camera.height / self.zoom) / 2)

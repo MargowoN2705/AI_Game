@@ -166,15 +166,10 @@ class Player(Sprite):
 
         surface.blit(frame_image, screen_pos)
 
-    def update(self, camera, dt):
+    def update(self, dt):
         self.x, self.y = self.get_position()
         self.rect.topleft = (int(self.x), int(self.y))
-        camera.camera.x = self.x - (camera.camera.width / camera.zoom) / 2
-        camera.camera.y = self.y - (camera.camera.height / camera.zoom) / 2
-
         self.update_animation(dt)
-
-
 
 
 

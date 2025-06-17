@@ -7,7 +7,7 @@ from game_map.game_map import Map,Tile,ChestTile
 from .camera import Camera
 from config import get_asset_path
 from .item import Item, ItemEntity, Inventory
-
+from .team_manager import TeamManager
 
 class Game:
 
@@ -77,7 +77,7 @@ class Game:
             Tile("chest", get_asset_path("chest2.png"), True),  # 32
         ]
 
-        self.game_map = Map(get_asset_path("game_map", "maps_storage", "map_1.map", own_path=True), self.tile_kinds, 32)
+        self.game_map = Map(get_asset_path("game_map", "maps_storage", "simple_map.map", own_path=True), self.tile_kinds, 32)
 
 
         tree_image_path = get_asset_path("tree.png")
@@ -127,8 +127,12 @@ class Game:
         player_start_x = map_width_px // 2
         player_start_y = map_height_px // 2
 
+
+
         self.player = Player(get_asset_path("../images/DarkRanger.png"), player_start_x, player_start_y, a=0.5, game_map=self.game_map) #TODO Ogarnac bounding boxy
 
+        self.team_manager = TeamManager(self.game_map, self.player)
+        self.camera.follow(self.player)
 
         # Przedmioty
         self.items = [
@@ -223,7 +227,7 @@ class Game:
 
             self.screen.fill(self.clear_color)  # <-- czyść ekran na samym początku!
 
-            self.player.update(self.camera, dt)
+            self.team_manager.update(dt)
 
             for y, row in enumerate(self.game_map.tiles):
                 for x, tile in enumerate(row):
@@ -237,11 +241,9 @@ class Game:
                     continue
                 s.draw(self.screen, self.camera)
 
-
-
-            self.player.draw(self.screen, self.camera)  # Rysuj gracza **raz** na końcu
+            self.team_manager.draw(self.screen, self.camera)
             self.player.draw_inventory(self.screen, self.player.inventory)
-
+            self.camera.update()
 
             pygame.display.flip()
 
