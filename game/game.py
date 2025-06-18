@@ -76,12 +76,9 @@ class Game:
                     if random.random() < 0.15:  # 15% szansy na krzak
                         bush_sprite = Sprite(bush_image, x * TILE_SIZE, y * TILE_SIZE)
 
-        map_width_px = len(self.game_map.raw_map_data[0]) * TILE_SIZE
-        map_height_px = len(self.game_map.raw_map_data) * TILE_SIZE
 
-        player_start_x = map_width_px // 2
-        player_start_y = map_height_px // 2
-
+        player_start_x = self.game_map.width_px // 2
+        player_start_y = self.game_map.height_px // 2
 
 
         self.player = Player(get_asset_path("../images/DarkRanger.png"), player_start_x, player_start_y, a=0.5, game_map=self.game_map) #TODO Ogarnac bounding boxy

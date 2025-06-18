@@ -63,6 +63,10 @@ class Map:
             self.tiles.append(row)
             self.raw_map_data.append(raw_row)
 
+            # dlugosc i wysokosc mapy w px
+            self.width_px = len(self.raw_map_data[0]) * TILE_SIZE
+            self.height_px = len(self.raw_map_data) * TILE_SIZE
+
     def draw(self, surface,camera):
         for y, row in enumerate(self.tiles):
             for x, tile in enumerate(row):
