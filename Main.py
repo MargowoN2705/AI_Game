@@ -1,11 +1,15 @@
 import pygame
 
 from game.game import Game
-from game_map.map_editor import MapEditor
+#from game_map.map_editor import MapEditor
 
 
 #TODO Naprwic Maina
 
+game = Game()
+game.run_game()
+
+'''
 def main():
     print ("Gra: 1.")
     print ('Edytor: 2')
@@ -77,3 +81,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+'''

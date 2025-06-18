@@ -1,5 +1,6 @@
 import pygame
 from .sprite import Sprite
+from config import INVENTORY_SIZE, DEFAULT_SELECTED_SLOT
 
 
 class Item:
@@ -22,9 +23,9 @@ class ItemEntity(Sprite):
 
 
 class Inventory:
-    def __init__(self, size=5):
-        self.slots = [None] * size
-        self.selected_index = 3 # aktualnie wybrany slot
+    def __init__(self):
+        self.slots = [None] * INVENTORY_SIZE
+        self.selected_index = DEFAULT_SELECTED_SLOT
 
 
     def add_item(self, item):

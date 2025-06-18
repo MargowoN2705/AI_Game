@@ -1,4 +1,5 @@
 import pygame
+from config import TILE_SIZE
 
 
 class Tile:
@@ -35,8 +36,8 @@ class ChestTile(Tile):
 
 class Map:
 
-    def __init__(self, map_file, tile_kinds, tile_size):
-        self.tile_size = tile_size
+    def __init__(self, map_file, tile_kinds):
+        self.tile_size = TILE_SIZE
         self.tiles = []
         self.raw_map_data = []
 

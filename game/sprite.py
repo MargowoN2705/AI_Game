@@ -39,7 +39,7 @@ class Sprite:
         start_x = (screen.get_width() - (slot_size + margin) * len(inventory.slots)) // 2
         y = screen.get_height() - slot_size - 10
 
-        font = pygame.font.SysFont(None, 18)
+        #font = pygame.font.SysFont(None, 18)
 
         for i, item in enumerate(inventory.slots):
             x = start_x + i * (slot_size + margin)

@@ -5,7 +5,7 @@ class Agent(Player):
     def __init__(self, image, x, y, game_map, team_id=0):
         super().__init__(image, x, y, a=None, game_map=game_map)
         self.team_id = team_id
-        self.action = None  # np. ("MOVE_LEFT", "MOVE_RIGHT", itd.)
+        self.action = None
         self.move_dir = random.choice([Direction.UP, Direction.DOWN, Direction.LEFT, Direction.RIGHT])
 
     def decide_action(self):

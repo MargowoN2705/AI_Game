@@ -2,6 +2,7 @@ import pygame
 from .sprite import Sprite
 from enum import Enum
 from .item import Inventory
+from config import PLAYER_CONFIG
 
 
 class Direction(Enum):
@@ -16,9 +17,9 @@ class Player(Sprite):
 
         self.VEL_X = 0
         self.VEL_Y = 0
-        self.ACC = 5
-        self.FRICTION = 1
-        self.MAX_VEL = 5
+        self.ACC = PLAYER_CONFIG['ACC']
+        self.FRICTION = PLAYER_CONFIG['FRICTION']
+        self.MAX_VEL = PLAYER_CONFIG['MAX_VEL']
         self.game_map = game_map
         self.keys_down = set()
         self.DIR = Direction.RIGHT
@@ -26,10 +27,10 @@ class Player(Sprite):
         self.inventory = Inventory()
 
         # health and mana points
-        self.max_hp = 100
+        self.max_hp = PLAYER_CONFIG['MAX_HP']
         self.hp = 100
-        self.max_mp = 50
-        self.mp = 50
+        self.max_mp = PLAYER_CONFIG['MAX_MP']
+        self.mp = 100
 
         #for Animation
         self.sprite_sheet = pygame.image.load(image).convert_alpha()

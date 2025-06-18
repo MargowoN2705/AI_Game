@@ -1,10 +1,11 @@
 import pygame
+from config import CAMERA_ZOOM
 
 class Camera:
 
     def __init__(self):
         self.camera = pygame.Rect(0, 0, 0, 0)
-        self.zoom = 1.75  # stały zoom, 1.5 = 150% powiększenia
+        self.zoom = CAMERA_ZOOM
 
     def create_screen(self, width, height, title, mode):
         pygame.display.set_caption(title)
