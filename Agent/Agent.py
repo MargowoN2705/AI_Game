@@ -31,7 +31,6 @@ class Agent(Player):
     def get_movement(self):
         self.decide_action()
         self.apply_action()
-        self.apply_friction()
         self.clamp_velocity()
         self.moving = (self.VEL_X != 0 or self.VEL_Y != 0)
         return self.VEL_X, self.VEL_Y
