@@ -2,7 +2,7 @@ import pygame
 from .sprite import Sprite
 from enum import Enum
 from .item import Inventory
-from config import PLAYER_CONFIG
+from config import PLAYER_CONFIG, TILE_SIZE
 
 
 class Direction(Enum):
@@ -178,12 +178,18 @@ class Player(Sprite):
 
     def update(self, dt):
         self.x, self.y = self.get_position()
+        self.clamp_player_position(self.game_map.width_px, self.game_map.height_px) # sprawdzanie granic
         self.rect.topleft = (int(self.x), int(self.y))
         self.update_animation(dt)
 
+    # Sprawdzanie granic
+    def clamp_player_position(self, map_width_px, map_height_px):
+        self.x = max(0, min(self.x, map_width_px - TILE_SIZE))
+        self.y = max(0, min(self.y, map_height_px - TILE_SIZE))
 
-
-    '''def draw_health_bar(self, surface, camera):
+    '''kod do funkcji punktow zycia i many 
+        
+    def draw_health_bar(self, surface, camera):
         # Obliczamy pozycję nad graczem na ekranie (z uwzględnieniem kamery)
         screen_x, screen_y = camera.apply((self.x, self.y))
 
