@@ -107,8 +107,8 @@ class Player(Sprite):
         for y, row in enumerate(self.game_map.tiles):
             for x_, tile in enumerate(row):
                 if tile.is_solid:
-                    tile_rect = pygame.Rect(x_ * self.game_map.tile_size, y * self.game_map.tile_size,
-                                            self.game_map.tile_size, self.game_map.tile_size)
+                    tile_rect = pygame.Rect(x_ * TILE_SIZE, y * TILE_SIZE,
+                                            TILE_SIZE, TILE_SIZE)
                     if new_rect_x.colliderect(tile_rect):
                         collision_x = True
                         break
@@ -127,8 +127,8 @@ class Player(Sprite):
         for y, row in enumerate(self.game_map.tiles):
             for x_, tile in enumerate(row):
                 if tile.is_solid:
-                    tile_rect = pygame.Rect(x_ * self.game_map.tile_size, y * self.game_map.tile_size,
-                                            self.game_map.tile_size, self.game_map.tile_size)
+                    tile_rect = pygame.Rect(x_ * TILE_SIZE, y * TILE_SIZE,
+                                            TILE_SIZE, TILE_SIZE)
                     if new_rect_y.colliderect(tile_rect):
                         collision_y = True
                         break

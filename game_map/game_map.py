@@ -37,10 +37,11 @@ class ChestTile(Tile):
 class Map:
 
     def __init__(self, map_file, tile_kinds):
-        self.tile_size = TILE_SIZE
         self.tiles = []
         self.raw_map_data = []
         self.scaled_tiles = []  # dla cull rendering (w budowie)
+        #self.width_px
+        #self.height_px
 
         with open(map_file, "r") as f:
             lines = f.readlines()
@@ -72,14 +73,14 @@ class Map:
         map_width_tiles = len(self.tiles[0])
         map_height_tiles = len(self.tiles)
 
-        start_x, end_x, start_y, end_y = camera.get_visible_tile_range(self.tile_size, map_width_tiles,
+        start_x, end_x, start_y, end_y = camera.get_visible_tile_range(TILE_SIZE, map_width_tiles,
                                                                        map_height_tiles)
 
         for y in range(start_y, end_y):
             for x in range(start_x, end_x):
                 tile = self.tiles[y][x]
-                pos_x = (x * self.tile_size - camera.camera.x) * camera.zoom
-                pos_y = (y * self.tile_size - camera.camera.y) * camera.zoom
+                pos_x = (x * TILE_SIZE - camera.camera.x) * camera.zoom
+                pos_y = (y * TILE_SIZE - camera.camera.y) * camera.zoom
 
                 tile_image = camera.apply_surface(tile.image)
                 surface.blit(tile_image, (int(pos_x), int(pos_y)))
@@ -89,7 +90,7 @@ class Map:
         for y, row in enumerate(self.tiles):
             for x, tile in enumerate(row):
                 if tile.is_solid:
-                    tile_rect = pygame.Rect(x * self.tile_size, y * self.tile_size, self.tile_size, self.tile_size)
+                    tile_rect = pygame.Rect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE)
                     if new_rect.colliderect(tile_rect):
                         if dx > 0:
                             new_rect.right = tile_rect.left
@@ -101,7 +102,7 @@ class Map:
         for y, row in enumerate(self.tiles):
             for x, tile in enumerate(row):
                 if tile.is_solid:
-                    tile_rect = pygame.Rect(x * self.tile_size, y * self.tile_size, self.tile_size, self.tile_size)
+                    tile_rect = pygame.Rect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE)
                     if new_rect.colliderect(tile_rect):
                         if dy > 0:
                             new_rect.bottom = tile_rect.top

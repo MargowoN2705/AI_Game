@@ -111,8 +111,8 @@ class Game:
 
     def check_tree_interactions(self):
         for sprite, x, y in self.tree_sprites:
-            tile_x = x * self.game_map.tile_size
-            tile_y = y * self.game_map.tile_size
+            tile_x = x * TILE_SIZE
+            tile_y = y * TILE_SIZE
 
             sprite_rect = pygame.Rect(tile_x, tile_y, 32, 32)
             if self.player.rect.colliderect(sprite_rect):
@@ -183,17 +183,24 @@ class Game:
 
             self.team_manager.update(dt)
 
+            start_x = max(0, int(self.camera.camera.x // (TILE_SIZE) + 2))
+            start_y = max(0, int(self.camera.camera.y // (TILE_SIZE) + 2))
+            end_x = min(self.game_map.width_px,
+                        int((self.camera.camera.x + self.camera.width / self.camera.zoom) // TILE_SIZE) + 1 - 3)
+            end_y = min(self.game_map.height_px,
+                        int((self.camera.camera.y + self.camera.height / self.camera.zoom) // TILE_SIZE) + 1 - 3)
 
             # dla cull rendering (w budowie)
-            for y, row in enumerate(self.game_map.scaled_tiles):
-                for x, tile_image in enumerate(row):
-                    pos_x = (x * self.game_map.tile_size * self.camera.zoom) - self.camera.camera.x * self.camera.zoom
-                    pos_y = (y * self.game_map.tile_size * self.camera.zoom) - self.camera.camera.y * self.camera.zoom
+            for y in range(start_y, end_y):
+                for x in range(start_x, end_x):
+                    tile_image = self.game_map.scaled_tiles[y][x]
+                    pos_x = (x * TILE_SIZE * self.camera.zoom) - self.camera.camera.x * self.camera.zoom
+                    pos_y = (y * TILE_SIZE * self.camera.zoom) - self.camera.camera.y * self.camera.zoom
                     self.screen.blit(tile_image, (int(pos_x), int(pos_y)))
 
             #for y, row in enumerate(self.game_map.tiles):
             #    for x, tile in enumerate(row):
-            #        tile_pos = (x * self.game_map.tile_size, y * self.game_map.tile_size)
+            #        tile_pos = (x * TILE_SIZE, y * TILE_SIZE)
             #        screen_pos = self.camera.apply(tile_pos)
             #        tile_image = self.camera.apply_surface(tile.image)
             #        self.screen.blit(tile_image, screen_pos)
