@@ -37,10 +37,10 @@ class ChestTile(Tile):
 class Map:
 
     def __init__(self, map_file, tile_kinds):
-        self.scaled_tiles = []
         self.tile_size = TILE_SIZE
         self.tiles = []
         self.raw_map_data = []
+        self.scaled_tiles = []  # dla cull rendering (w budowie)
 
         with open(map_file, "r") as f:
             lines = f.readlines()
@@ -110,6 +110,8 @@ class Map:
         rect.y = new_rect.y
         return rect.x, rect.y
 
+
+    # dla cull rendering (w budowie)
     def rescale_tiles(self, zoom):
         self.scaled_tiles = []
         for row in self.tiles:
