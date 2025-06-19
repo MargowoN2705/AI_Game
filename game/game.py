@@ -98,7 +98,7 @@ class Game:
             # ItemEntity(self.items[1], (10, 3)),
         ]
 
-        self.game_map.rescale_tiles(self.camera.zoom) # dla cull rendering (w budowie)
+        self.game_map.rescale_tiles(self.camera.zoom) # Renderowanie w inicie juz przeskalowanych obrazkow
 
         self.reset_game()
 
@@ -145,9 +145,11 @@ class Game:
 
                     if event.key == pygame.K_UP:
                         self.camera.zoom = min(4.0, self.camera.zoom + 0.25)
+                        self.game_map.rescale_tiles(self.camera.zoom)
 
                     if event.key == pygame.K_DOWN:
                         self.camera.zoom = max(0.25, self.camera.zoom - 0.25)
+                        self.game_map.rescale_tiles(self.camera.zoom)
 
                     if event.key == pygame.K_q:
                         dropped_item = self.player.inventory.drop_item()
