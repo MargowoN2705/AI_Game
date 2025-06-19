@@ -183,14 +183,17 @@ class Game:
 
             self.team_manager.update(dt)
 
-            start_x = max(0, int(self.camera.camera.x // (TILE_SIZE) + 2))
-            start_y = max(0, int(self.camera.camera.y // (TILE_SIZE) + 2))
-            end_x = min(self.game_map.width_px,
-                        int((self.camera.camera.x + self.camera.width / self.camera.zoom) // TILE_SIZE) + 1 - 3)
-            end_y = min(self.game_map.height_px,
-                        int((self.camera.camera.y + self.camera.height / self.camera.zoom) // TILE_SIZE) + 1 - 3)
 
-            # dla cull rendering (w budowie)
+
+            # Renderowanie obrazu tylko dla widocznego obszaru.
+
+            start_x = max(0, int(self.camera.camera.x // TILE_SIZE) + 0) # +2 jest dla testu (żeby bylo widac jak to dziala)
+            start_y = max(0, int(self.camera.camera.y // TILE_SIZE) + 0) # +2 jest dla testu
+            end_x = min(len(self.game_map.scaled_tiles[0]),
+                        int((self.camera.camera.x + self.camera.width / self.camera.zoom) // TILE_SIZE) +1 - 0) # -2 jest dla testu
+            end_y = min(len(self.game_map.scaled_tiles),
+                        int((self.camera.camera.y + self.camera.height / self.camera.zoom) // TILE_SIZE) +1 - 0) # -2 jest dla testu
+
             for y in range(start_y, end_y):
                 for x in range(start_x, end_x):
                     tile_image = self.game_map.scaled_tiles[y][x]
@@ -198,17 +201,15 @@ class Game:
                     pos_y = (y * TILE_SIZE * self.camera.zoom) - self.camera.camera.y * self.camera.zoom
                     self.screen.blit(tile_image, (int(pos_x), int(pos_y)))
 
-            #for y, row in enumerate(self.game_map.tiles):
-            #    for x, tile in enumerate(row):
-            #        tile_pos = (x * TILE_SIZE, y * TILE_SIZE)
-            #        screen_pos = self.camera.apply(tile_pos)
-            #        tile_image = self.camera.apply_surface(tile.image)
-            #        self.screen.blit(tile_image, screen_pos)
-
             for s in sprites:
                 if hasattr(s, "picked_up") and s.picked_up:
                     continue
-                s.draw(self.screen, self.camera)
+
+                left, top, right, bottom = s.get_tile_bounds()
+
+                if right >= start_x and left < end_x and bottom >= start_y and top < end_y:
+                    s.draw(self.screen, self.camera)
+
 
             self.team_manager.draw(self.screen, self.camera)
             self.player.draw_inventory(self.screen, self.player.inventory)

@@ -111,8 +111,7 @@ class Map:
         rect.y = new_rect.y
         return rect.x, rect.y
 
-
-    # dla cull rendering (w budowie)
+    # do optymalizacji wyswietlania
     def rescale_tiles(self, zoom):
         self.scaled_tiles = []
         for row in self.tiles:

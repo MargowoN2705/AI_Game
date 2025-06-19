@@ -37,7 +37,6 @@ class Camera:
             self.camera.y = int(self.target.y - (self.camera.height / self.zoom) / 2)
 
 
-    # dla cull rendering (w budowie)
     def get_visible_tile_range(self, tile_size, map_width_tiles, map_height_tiles):
         # oblicz granice widocznego prostokąta w koordynatach pikselowych mapy
         visible_left = self.camera.x
