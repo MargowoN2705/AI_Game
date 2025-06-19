@@ -19,7 +19,7 @@ PLAYER_CONFIG = {
     "MAX_MP": 100,
 }
 
-INVENTORY_SIZE = 2
+INVENTORY_SIZE = 5
 DEFAULT_SELECTED_SLOT = 1
 
 
@@ -83,7 +83,15 @@ TILE_KINDS = [
     {"name": "grass_inverted", "solid": False}, # 25
     {"name": "rock_tile_glow", "solid": True},  # 26
     {"name": "grass", "solid": False},          # 27
-    {"name": "grass", "solid": False}           # 28
+    {"name": "grass", "solid": False},           # 28
+
+    # tymczasowe
+    {"name": "grass", "solid": False},  # 28
+    {"name": "grass", "solid": False},  # 28
+    {"name": "grass", "solid": False},  # 28
+    {"name": "grass", "solid": False},  # 28
+    {"name": "grass", "solid": False},  # 28
+    {"name": "grass", "solid": False}  # 28
 ]
 '''??????????????????????????????????????????????????????????????????????????????????????
             # 29–33: obiekty interaktywne

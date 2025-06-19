@@ -98,6 +98,8 @@ class Game:
             # ItemEntity(self.items[1], (10, 3)),
         ]
 
+        self.game_map.rescale_tiles(self.camera.zoom)
+
         self.reset_game()
 
     def check_chest_interactions(self):
@@ -181,12 +183,13 @@ class Game:
 
             self.team_manager.update(dt)
 
-            for y, row in enumerate(self.game_map.tiles):
-                for x, tile in enumerate(row):
-                    tile_pos = (x * self.game_map.tile_size, y * self.game_map.tile_size)
-                    screen_pos = self.camera.apply(tile_pos)
-                    tile_image = self.camera.apply_surface(tile.image)
-                    self.screen.blit(tile_image, screen_pos)
+
+
+            for y, row in enumerate(self.game_map.scaled_tiles):
+                for x, tile_image in enumerate(row):
+                    pos_x = (x * self.game_map.tile_size * self.camera.zoom) - self.camera.camera.x * self.camera.zoom
+                    pos_y = (y * self.game_map.tile_size * self.camera.zoom) - self.camera.camera.y * self.camera.zoom
+                    self.screen.blit(tile_image, (int(pos_x), int(pos_y)))
 
             for s in sprites:
                 if hasattr(s, "picked_up") and s.picked_up:

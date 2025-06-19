@@ -37,6 +37,7 @@ class ChestTile(Tile):
 class Map:
 
     def __init__(self, map_file, tile_kinds):
+        self.scaled_tiles = []
         self.tile_size = TILE_SIZE
         self.tiles = []
         self.raw_map_data = []
@@ -67,12 +68,21 @@ class Map:
             self.width_px = len(self.raw_map_data[0]) * TILE_SIZE
             self.height_px = len(self.raw_map_data) * TILE_SIZE
 
-    def draw(self, surface,camera):
-        for y, row in enumerate(self.tiles):
-            for x, tile in enumerate(row):
-                pos_x = x * self.tile_size - camera.camera.x
-                pos_y = y * self.tile_size - camera.camera.y
-                surface.blit(tile.image, (pos_x, pos_y))
+    def draw(self, surface, camera):
+        map_width_tiles = len(self.tiles[0])
+        map_height_tiles = len(self.tiles)
+
+        start_x, end_x, start_y, end_y = camera.get_visible_tile_range(self.tile_size, map_width_tiles,
+                                                                       map_height_tiles)
+
+        for y in range(start_y, end_y):
+            for x in range(start_x, end_x):
+                tile = self.tiles[y][x]
+                pos_x = (x * self.tile_size - camera.camera.x) * camera.zoom
+                pos_y = (y * self.tile_size - camera.camera.y) * camera.zoom
+
+                tile_image = camera.apply_surface(tile.image)
+                surface.blit(tile_image, (int(pos_x), int(pos_y)))
 
     def check_collision(self, rect, dx, dy):
         new_rect = rect.move(dx, 0)
@@ -99,3 +109,14 @@ class Map:
                             new_rect.top = tile_rect.bottom
         rect.y = new_rect.y
         return rect.x, rect.y
+
+    def rescale_tiles(self, zoom):
+        self.scaled_tiles = []
+        for row in self.tiles:
+            scaled_row = []
+            for tile in row:
+                w = int(tile.image.get_width() * zoom)
+                h = int(tile.image.get_height() * zoom)
+                scaled_image = pygame.transform.scale(tile.image, (w, h))
+                scaled_row.append(scaled_image)
+            self.scaled_tiles.append(scaled_row)
