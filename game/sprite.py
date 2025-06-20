@@ -24,11 +24,19 @@ class Sprite:
         if self in sprites:
             sprites.remove(self)
 
-    def get_tile_bounds(self):
+    def get_agent_bounds(self):
         left = self.x // TILE_SIZE
         top = self.y // TILE_SIZE
         right = (self.x + TILE_SIZE) // TILE_SIZE
         bottom = (self.y + TILE_SIZE) // TILE_SIZE
+        return int(left), int(top), int(right), int(bottom)
+
+    def get_sprite_bounds(self):
+        render_y = self.y - self.offset_y  # uwzględnij przesunięcie
+        left = self.x // TILE_SIZE
+        top = render_y // TILE_SIZE
+        right = (self.x + self.image.get_width()) // TILE_SIZE
+        bottom = (render_y + self.image.get_height()) // TILE_SIZE
         return int(left), int(top), int(right), int(bottom)
 
 

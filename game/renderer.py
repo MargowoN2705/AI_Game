@@ -1,5 +1,12 @@
+from agent.agent import Agent
 from config import TILE_SIZE
 
+'''
+    jest problem z uniwersalnym pobieraniem granic (agent ma dziwnie duzy offset) wiec:
+    jest osobne pobieranie granic dla
+    agenta -get_agent_bounds()
+    i innych sprite -get_sprite_bounds() -uwzglednia offset
+'''
 
 def render_visible_area(camera, game_map, screen, sprites):
 
@@ -7,11 +14,9 @@ def render_visible_area(camera, game_map, screen, sprites):
     start_x = max(0, int(camera.camera.x // TILE_SIZE) + 5)  # +2 jest dla testu (żeby bylo widac jak to dziala)
     start_y = max(0, int(camera.camera.y // TILE_SIZE) + 5)  # +2 jest dla testu
     end_x = min(len(game_map.scaled_tiles[0]),
-                int((
-                                camera.camera.x + camera.width / camera.zoom) // TILE_SIZE) + 1 - 4)  # -2 jest dla testu
+                int((camera.camera.x + camera.width / camera.zoom) // TILE_SIZE) + 1 - 4)  # -2 jest dla testu
     end_y = min(len(game_map.scaled_tiles),
-                int((
-                                camera.camera.y + camera.height / camera.zoom) // TILE_SIZE) + 1 - 4)  # -2 jest dla testu
+                int(( camera.camera.y + camera.height / camera.zoom) // TILE_SIZE) + 1 - 4)  # -2 jest dla testu
 
     # wyswietlanie Tile'ow dla widocznego obszaru (kamery)
     for y in range(start_y, end_y):
@@ -28,7 +33,10 @@ def render_visible_area(camera, game_map, screen, sprites):
             continue
 
         # gdzie sie zaczyna i konczy Sprite:
-        left, top, right, bottom = s.get_tile_bounds()
+        if isinstance(s, Agent):
+            left, top, right, bottom = s.get_agent_bounds()
+        else:
+            left, top, right, bottom = s.get_sprite_bounds()
 
         # Rysowanie Sprite gdy granica znajduje sie w zasiegu widzenia (kamery)
         if right >= start_x and left < end_x and bottom >= start_y and top < end_y:
