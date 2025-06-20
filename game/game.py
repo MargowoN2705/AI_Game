@@ -9,6 +9,7 @@ from config import get_asset_path, TILE_KINDS, GAME_CONFIG, TILE_SIZE
 from .item import Item, ItemEntity, Inventory
 from .team_manager import TeamManager
 
+
 class Game:
 
     def __init__(self):
@@ -203,12 +204,18 @@ class Game:
                     pos_y = (y * TILE_SIZE * self.camera.zoom) - self.camera.camera.y * self.camera.zoom
                     self.screen.blit(tile_image, (int(pos_x), int(pos_y)))
 
+
+            # wyswietlanie Sprite
             for s in sprites:
+
+                # sprawdzanie czy ma atrybut "picked_up" - wykorzystywane przy podnoszeniu itemow do ekwipunku
                 if hasattr(s, "picked_up") and s.picked_up:
                     continue
 
+                # gdzie sie zaczyna i konczy Sprite:
                 left, top, right, bottom = s.get_tile_bounds()
 
+                # Rysowanie Sprite gdy granica znajduje sie w zasiegu widzenia (kamery)
                 if right >= start_x and left < end_x and bottom >= start_y and top < end_y:
                     s.draw(self.screen, self.camera)
 

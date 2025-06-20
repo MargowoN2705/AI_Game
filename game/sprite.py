@@ -25,12 +25,11 @@ class Sprite:
             sprites.remove(self)
 
     def get_tile_bounds(self):
-        render_y = self.y - self.offset_y  # uwzględnij przesunięcie
-        left = int(self.x // TILE_SIZE)
-        top = int(render_y // TILE_SIZE)
-        right = int((self.x + self.image.get_width()) // TILE_SIZE)
-        bottom = int((render_y + self.image.get_height()) // TILE_SIZE)
-        return left, top, right, bottom
+        left = self.x // TILE_SIZE
+        top = self.y // TILE_SIZE
+        right = (self.x + TILE_SIZE) // TILE_SIZE
+        bottom = (self.y + TILE_SIZE) // TILE_SIZE
+        return int(left), int(top), int(right), int(bottom)
 
     def draw(self, screen, camera):
         pos = (self.x, self.y - self.offset_y)
