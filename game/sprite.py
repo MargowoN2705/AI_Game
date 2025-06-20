@@ -31,6 +31,7 @@ class Sprite:
         bottom = (self.y + TILE_SIZE) // TILE_SIZE
         return int(left), int(top), int(right), int(bottom)
 
+
     def draw(self, screen, camera):
         pos = (self.x, self.y - self.offset_y)
         pos = camera.apply(pos)  # przesuwamy i skalujemy pozycję

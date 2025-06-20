@@ -8,6 +8,7 @@ from .camera import Camera
 from config import get_asset_path, TILE_KINDS, GAME_CONFIG, TILE_SIZE
 from .item import Item, ItemEntity, Inventory
 from .team_manager import TeamManager
+from .renderer import render_visible_area
 
 
 class Game:
@@ -186,39 +187,7 @@ class Game:
 
             self.team_manager.update(dt)
 
-
-
-            # Renderowanie obrazu tylko dla widocznego obszaru.
-
-            start_x = max(0, int(self.camera.camera.x // TILE_SIZE) + 5) # +2 jest dla testu (żeby bylo widac jak to dziala)
-            start_y = max(0, int(self.camera.camera.y // TILE_SIZE) + 5) # +2 jest dla testu
-            end_x = min(len(self.game_map.scaled_tiles[0]),
-                        int((self.camera.camera.x + self.camera.width / self.camera.zoom) // TILE_SIZE) +1 - 4) # -2 jest dla testu
-            end_y = min(len(self.game_map.scaled_tiles),
-                        int((self.camera.camera.y + self.camera.height / self.camera.zoom) // TILE_SIZE) +1 - 4) # -2 jest dla testu
-
-            for y in range(start_y, end_y):
-                for x in range(start_x, end_x):
-                    tile_image = self.game_map.scaled_tiles[y][x]
-                    pos_x = (x * TILE_SIZE * self.camera.zoom) - self.camera.camera.x * self.camera.zoom
-                    pos_y = (y * TILE_SIZE * self.camera.zoom) - self.camera.camera.y * self.camera.zoom
-                    self.screen.blit(tile_image, (int(pos_x), int(pos_y)))
-
-
-            # wyswietlanie Sprite
-            for s in sprites:
-
-                # sprawdzanie czy ma atrybut "picked_up" - wykorzystywane przy podnoszeniu itemow do ekwipunku
-                if hasattr(s, "picked_up") and s.picked_up:
-                    continue
-
-                # gdzie sie zaczyna i konczy Sprite:
-                left, top, right, bottom = s.get_tile_bounds()
-
-                # Rysowanie Sprite gdy granica znajduje sie w zasiegu widzenia (kamery)
-                if right >= start_x and left < end_x and bottom >= start_y and top < end_y:
-                    s.draw(self.screen, self.camera)
-
+            render_visible_area(self.camera, self.game_map, self.screen, sprites)
 
             self.player.draw_inventory(self.screen, self.player.inventory)
             self.camera.update()
