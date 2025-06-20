@@ -98,7 +98,7 @@ class Game:
             # ItemEntity(self.items[1], (10, 3)),
         ]
 
-        self.game_map.rescale_tiles(self.camera.zoom) # Renderowanie w inicie juz przeskalowanych obrazkow
+        self.game_map.rescale_tiles(self.camera.zoom) # ladowanie w inicie przeskalowanych obrazkow (lepsza wydajnosc)
 
         self.reset_game()
 
@@ -189,12 +189,12 @@ class Game:
 
             # Renderowanie obrazu tylko dla widocznego obszaru.
 
-            start_x = max(0, int(self.camera.camera.x // TILE_SIZE) + 0) # +2 jest dla testu (żeby bylo widac jak to dziala)
-            start_y = max(0, int(self.camera.camera.y // TILE_SIZE) + 0) # +2 jest dla testu
+            start_x = max(0, int(self.camera.camera.x // TILE_SIZE) + 5) # +2 jest dla testu (żeby bylo widac jak to dziala)
+            start_y = max(0, int(self.camera.camera.y // TILE_SIZE) + 5) # +2 jest dla testu
             end_x = min(len(self.game_map.scaled_tiles[0]),
-                        int((self.camera.camera.x + self.camera.width / self.camera.zoom) // TILE_SIZE) +1 - 0) # -2 jest dla testu
+                        int((self.camera.camera.x + self.camera.width / self.camera.zoom) // TILE_SIZE) +1 - 4) # -2 jest dla testu
             end_y = min(len(self.game_map.scaled_tiles),
-                        int((self.camera.camera.y + self.camera.height / self.camera.zoom) // TILE_SIZE) +1 - 0) # -2 jest dla testu
+                        int((self.camera.camera.y + self.camera.height / self.camera.zoom) // TILE_SIZE) +1 - 4) # -2 jest dla testu
 
             for y in range(start_y, end_y):
                 for x in range(start_x, end_x):
@@ -213,7 +213,6 @@ class Game:
                     s.draw(self.screen, self.camera)
 
 
-            self.team_manager.draw(self.screen, self.camera)
             self.player.draw_inventory(self.screen, self.player.inventory)
             self.camera.update()
 

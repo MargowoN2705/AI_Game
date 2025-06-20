@@ -14,12 +14,12 @@ class TeamManager:
         self.team_a.append(player)
 
         # Spawn Team A
-        for i in range(2):
+        for i in range(110):
             agent = Agent(get_asset_path("../images/DarkRanger.png"), 100 + i * 40, 100, game_map, team_id=0)
             self.team_a.append(agent)
 
         # Spawn Team B
-        for i in range(2):
+        for i in range(10):
             agent = Agent(get_asset_path("../images/DarkRangerGreen.png"), 400 + i * 40, 400, game_map, team_id=1)
             self.team_b.append(agent)
 
@@ -28,7 +28,3 @@ class TeamManager:
     def update(self, dt):
         for agent in self.all_agents:
             agent.update(dt)
-
-    def draw(self, surface, camera):
-        for agent in self.all_agents:
-            agent.draw(surface, camera)
