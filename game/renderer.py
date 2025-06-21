@@ -41,9 +41,7 @@ def render_visible_area(camera, game_map, screen, sprites):
 
 
 def render_sprites(tiles, tile_kinds, Sprite):
-
-    assets = {tile_id: pygame.image.load(get_asset_path(name)).convert_alpha()
-              for tile_id, name in SPRITE_TILES.items()}
+    assets = SPRITE_TILES
 
     bush_image = pygame.image.load(get_asset_path("bush_dark.png")).convert_alpha()
     bush_image = pygame.transform.smoothscale(bush_image, (32, 32))
@@ -55,23 +53,18 @@ def render_sprites(tiles, tile_kinds, Sprite):
         for x, tile_id in enumerate(row):
             pos = (x * TILE_SIZE, y * TILE_SIZE)
 
-            # Dodawanie sprite'ów po tile_id
+            # Dodawanie sprite'ów z assets
             if tile_id in assets:
-                if tile_id == 27:  # tree
+                if tile_id == 27:  # drzewo
                     sprite = Sprite(assets[tile_id], *pos, offset_y=96)
                     tree_sprites.append((sprite, x, y))
                 else:
                     sprite = Sprite(assets[tile_id], *pos)
                 all_sprites.append(sprite)
 
-            # Sprawdzenie nazwy kafelka
+            # Dodatkowe dekoracje na trawie
             tile_name = tile_kinds[tile_id].name
-
-
-            if tile_name == "chest":
-                pass #game_map.tiles[y][x] = ChestTile("chest", get_asset_path("chest2.png"), True, pos)
-
-            elif tile_name == "grass" and random.random() < 0.15:
+            if tile_name == "grass" and random.random() < 0.15:
                 bush_sprite = Sprite(bush_image, *pos)
                 all_sprites.append(bush_sprite)
 
