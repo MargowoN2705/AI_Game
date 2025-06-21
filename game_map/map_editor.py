@@ -17,7 +17,7 @@ class MapEditor:
         self.tile_kinds = [Tile(name, path, solid) for name, path, solid in tile_image_data]
 
         self.selected_tile_index = 1
-        self.game_map = Map(self.map_path, self.tile_kinds, self.tile_size)
+        self.game_map = Map(self.map_path, self.tile_kinds)
         self.center_camera_on_map()
         self.running = True
 
@@ -69,8 +69,8 @@ class MapEditor:
                 elif event.key == pygame.K_l:
                     self.load_map_data_from_file(self.map_path)
                 elif event.key == pygame.K_n:
-                    width = 100
-                    height = 80
+                    width = 32
+                    height = 32
                     self.create_empty_map(width, height)
                     print(f"[MapEditor] Stworzono nową mapę {width}x{height}")
 
@@ -80,9 +80,15 @@ class MapEditor:
                         return
                     self.place_tile()
 
+            elif event.type == pygame.MOUSEWHEEL:
+                self.camera.zoom += event.y * 0.1
+                self.camera.zoom = max(0.5, min(self.camera.zoom, 3))  # ogranicz zoom od 0.5 do 3
+                print(f"Zoom: {self.camera.zoom:.2f}")
+
         # Ruch kamery (strzałki lub WASD)
         keys = pygame.key.get_pressed()
-        speed = 10
+        speed = 10 / self.camera.zoom  # żeby przesuwanie było bardziej naturalne przy zoomie
+
 
         # Obliczamy maksymalne przesunięcie, żeby kamera nie wyszła poza mapę
         map_width_px = len(self.game_map.raw_map_data[0]) * self.tile_size
@@ -99,9 +105,16 @@ class MapEditor:
 
     def place_tile(self):
         mx, my = pygame.mouse.get_pos()
-        tx = (mx + self.camera.camera.x) // self.tile_size
-        ty = (my + self.camera.camera.y) // self.tile_size
 
+        # Skoryguj pozycję myszy o zoom i przesunięcie kamery
+        tx = int((mx / self.camera.zoom + self.camera.camera.x) // self.tile_size)
+        ty = int((my / self.camera.zoom + self.camera.camera.y) // self.tile_size)
+
+        if 0 <= ty < len(self.game_map.raw_map_data) and 0 <= tx < len(self.game_map.raw_map_data[ty]):
+            self.game_map.raw_map_data[ty][tx] = self.selected_tile_index
+            self.game_map.tiles[ty][tx] = self.tile_kinds[self.selected_tile_index]
+        else:
+            print(f"[MapEditor] Kliknięto poza mapą: tx={tx}, ty={ty}")
 
         if 0 <= ty < len(self.game_map.raw_map_data) and 0 <= tx < len(self.game_map.raw_map_data[ty]):
             self.game_map.raw_map_data[ty][tx] = self.selected_tile_index
@@ -141,68 +154,9 @@ class MapEditor:
             if i == self.selected_tile_index:
                 pygame.draw.rect(self.screen, (255, 255, 0), (x, y, self.tile_size, self.tile_size), 2)
 
-tile_image_data = [
-    # 0–9: podstawowe podłoża i warianty
-    ("grass", "../images/grass.png", False),                    # 0
-    ("grass_dark", "../images/grass_dark.png", False),          # 1
-    ("grass_bright", "../images/grass_bright.png", False),      # 2
-    ("grass_dark_1", "../images/grass_dark_1.png", False),      # 3
-    ("grass_dark_2", "../images/grass_dark_2.png", False),      # 4
-    ("grass_dark_3", "../images/grass_dark_3.png", False),      # 5
-    ("grass_dark_4", "../images/grass_dark_4.png", False),      # 6
-    ("grass_dark_5", "../images/grass_dark_5.png", False),      # 7
-    ("rock_tile", "../images/rock_tile.png", True),             # 8
-    ("rock_tile_dark", "../images/rock_tile_dark.png", True),   # 9
-
-    # 10–14: woda i warianty
-    ("water", "../images/water.png", True),                     # 10
-    ("water_bright", "../images/water_bright.png", True),       # 11
-    ("water_dark", "../images/water_dark.png", True),           # 12
-    ("water_high_contrast", "../images/water_high_contrast.png", True),  # 13
-
-    # 15–18: drewno i warianty
-    ("wood", "../images/wood.png", False),                      # 14
-    ("wood_red", "../images/wood_red.png", False),              # 15
-    ("wood_vibrant", "../images/wood_vibrant.png", False),      # 16
-    ("inny_wood", "../images/inny_wood.png", False),            # 17
-
-    # 19–21: ziemia i warianty
-    ("dirt", "../images/dirt.png", False),                      # 18
-    ("dirt_dark", "../images/dirt_dark.png", False),            # 19
-    ("dirt_desaturated", "../images/dirt_desaturated.png", False),  # 20
-
-    # 22–25: inne naturalne elementy
-    ("sand", "../images/sand.png", False),                      # 21
-    ("ice", "../images/ice.png", False),                        # 22
-    ("lava", "../images/lava.png", False),                      # 23
-    ("rock", "../images/rock.png", True),                       # 24
-
-    # 26–27: efekty specjalne
-    ("grass_inverted", "../images/grass_inverted.png", False),  # 25
-    ("rock_tile_glow", "../images/rock_tile_glow.png", True),   # 26
-
-    # 28–33: obiekty interaktywne
-    ("tree", "../images/tree.png", True),                       # 27
-    ("bow", "../images/bow.png", True),                         # 28
-    ("sword", "../images/sword.png", True),                     # 29
-    ("axe", "../images/axe.png", True),                         # 30
-    ("pickaxe", "../images/pickaxe.png", True),                 # 31
-    ("chest", "../images/chest2.png", True),                    # 32
-]
 
 
-pygame.init()
-screen_info = pygame.display.Info()
 
-editor = MapEditor(
-    map_path="maps_storage/map_1.map",
-    tile_image_data=tile_image_data,
-    tile_size=32,
-    screen_width=screen_info.current_w,
-    screen_height=screen_info.current_h
-)
-
-editor.run()
 
 
 

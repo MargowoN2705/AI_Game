@@ -4,12 +4,12 @@ from config import TILE_SIZE
 def render_visible_area(camera, game_map, screen, sprites):
 
     # gdzie sie zaczyna i konczy widoczny obszar (kamera)
-    start_x = max(0, int(camera.camera.x // TILE_SIZE) + 5)  # +2 jest dla testu (żeby bylo widac jak to dziala)
-    start_y = max(0, int(camera.camera.y // TILE_SIZE) + 5)  # +2 jest dla testu
+    start_x = max(0, int(camera.camera.x // TILE_SIZE) )  # +2 jest dla testu (żeby bylo widac jak to dziala)
+    start_y = max(0, int(camera.camera.y // TILE_SIZE) )  # +2 jest dla testu
     end_x = min(len(game_map.scaled_tiles[0]),
-                int((camera.camera.x + camera.width / camera.zoom) // TILE_SIZE) + 1 - 4)  # -2 jest dla testu
+                int((camera.camera.x + camera.width / camera.zoom) // TILE_SIZE)+2 )  # -2 jest dla testu
     end_y = min(len(game_map.scaled_tiles),
-                int(( camera.camera.y + camera.height / camera.zoom) // TILE_SIZE) + 1 - 4)  # -2 jest dla testu
+                int(( camera.camera.y + camera.height / camera.zoom) // TILE_SIZE)+2)  # -2 jest dla testu
 
     # wyswietlanie Tile'ow dla widocznego obszaru (kamery)
     for y in range(start_y, end_y):
