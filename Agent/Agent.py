@@ -1,5 +1,6 @@
 from game.player import Player, Direction
 import random
+from config import TILE_SIZE
 
 class Agent(Player):
     def __init__(self, image, x, y, game_map, team_id=0):
@@ -34,3 +35,10 @@ class Agent(Player):
         self.clamp_velocity()
         self.moving = (self.VEL_X != 0 or self.VEL_Y != 0)
         return self.VEL_X, self.VEL_Y
+
+    def get_bounds(self):
+        left = self.x // TILE_SIZE
+        top = self.y // TILE_SIZE
+        right = (self.x + TILE_SIZE) // TILE_SIZE
+        bottom = (self.y + TILE_SIZE) // TILE_SIZE
+        return int(left), int(top), int(right), int(bottom)

@@ -4,7 +4,7 @@ from game.game import Game
 #from game_map.map_editor import MapEditor
 
 
-#TODO Naprwic Maina
+#TODO - warstwy (plus menu) i ogarnac maina
 
 game = Game()
 game.run_game()

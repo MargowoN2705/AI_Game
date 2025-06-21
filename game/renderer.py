@@ -1,12 +1,5 @@
-from agent.agent import Agent
 from config import TILE_SIZE
 
-'''
-    jest problem z uniwersalnym pobieraniem granic (agent ma dziwnie duzy offset) wiec:
-    jest osobne pobieranie granic dla
-    agenta -get_agent_bounds()
-    i innych sprite -get_sprite_bounds() -uwzglednia offset
-'''
 
 def render_visible_area(camera, game_map, screen, sprites):
 
@@ -33,11 +26,10 @@ def render_visible_area(camera, game_map, screen, sprites):
             continue
 
         # gdzie sie zaczyna i konczy Sprite:
-        if isinstance(s, Agent):
-            left, top, right, bottom = s.get_agent_bounds()
-        else:
-            left, top, right, bottom = s.get_sprite_bounds()
+
+        left, top, right, bottom = s.get_bounds()
 
         # Rysowanie Sprite gdy granica znajduje sie w zasiegu widzenia (kamery)
         if right >= start_x and left < end_x and bottom >= start_y and top < end_y:
             s.draw(screen, camera)
+
