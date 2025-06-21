@@ -106,7 +106,7 @@ TILE_KINDS = [
 
 SPRITE_TILES = {
     24: get_asset_path("rock.png"),
-    27: get_asset_path("tree.png)"),
+    27: get_asset_path("tree.png"),
     28: get_asset_path("bow.png"),
     29: get_asset_path("sword.png"),
     30: get_asset_path("axe.png"),
