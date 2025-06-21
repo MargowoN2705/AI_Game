@@ -35,7 +35,7 @@ GAME_CONFIG = {
     "clear_color": (0, 0, 0),
     "game_speed": 60,
     #"fullscreen": True,
-    "game_map": get_asset_path("game_map", "maps_storage", "map_2.map", own_path=True),
+    "game_map": get_asset_path("game_map", "maps_storage", "map_12.map", own_path=True),
     #"game_map": get_asset_path("game_map", "maps_storage", "simple_map.map", own_path=True),
     "title": "GameAI",
     #"bush_spawn_chance": 0.15,
@@ -58,7 +58,7 @@ TILE_KINDS = [
     {"name": "rock_tile_dark", "solid": True},  # 9
 
     # 10–13: woda i warianty
-    {"name": "water", "solid": True},           # 10
+    {"name": "water", "solid": False},           # 10
     {"name": "water_bright", "solid": True},    # 11
     {"name": "water_dark", "solid": True},      # 12
     {"name": "water_high_contrast", "solid": True},     # 13
