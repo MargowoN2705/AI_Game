@@ -8,7 +8,7 @@ from .camera import Camera
 from config import get_asset_path, TILE_KINDS, GAME_CONFIG, TILE_SIZE
 from .item import Item, ItemEntity, Inventory
 from .team_manager import TeamManager
-from .renderer import render_visible_area
+from .renderer import render_visible_area, render_sprites
 
 
 class Game:
@@ -39,44 +39,7 @@ class Game:
         self.game_map = Map(GAME_CONFIG["game_map"], self.tile_kinds)
 
 
-        tree_image_path = get_asset_path("tree.png")
-        rock_image_path = get_asset_path("rock.png")
-        bow_image_path = get_asset_path("bow.png")
-        sword_image_path = get_asset_path("sword.png")
-        axe_image_path = get_asset_path("axe.png")
-        pickaxe_image_path = get_asset_path("pickaxe.png")
-        tree_stump_image_path = get_asset_path("tree_stump.png")
-
-        bush_image_path = get_asset_path("bush_dark.png")
-        bush_image = pygame.image.load(bush_image_path).convert_alpha()
-        bush_image = pygame.transform.smoothscale(bush_image, (32, 32))
-
-        self.tree_sprites = []
-
-        for y, row in enumerate(self.game_map.tiles):
-            for x, tile in enumerate(row):
-                tile_id = self.game_map.raw_map_data[y][x]
-                if tile_id == 27:
-                    sprite = Sprite(tree_image_path, x * TILE_SIZE, y * TILE_SIZE, offset_y=96)
-                    self.tree_sprites.append((sprite, x, y))
-                elif tile_id == 24:
-                    Sprite(rock_image_path, x * TILE_SIZE, y * TILE_SIZE)
-                elif tile_id == 28:
-                    Sprite(bow_image_path, x * TILE_SIZE, y * TILE_SIZE)
-                elif tile_id == 29:
-                    Sprite(sword_image_path, x * TILE_SIZE, y * TILE_SIZE)
-                elif tile_id == 30:
-                    Sprite(axe_image_path, x * TILE_SIZE, y * TILE_SIZE)
-                elif tile_id == 31:
-                    Sprite(pickaxe_image_path, x * TILE_SIZE, y * TILE_SIZE)
-                tile_name = self.tile_kinds[tile_id].name
-                if tile_name == "chest":
-                    pos = (x * TILE_SIZE, y * TILE_SIZE)
-                    self.game_map.tiles[y][x] = ChestTile("chest", get_asset_path("chest2.png"), True, pos)
-
-                if tile_name == "grass":
-                    if random.random() < 0.15:  # 15% szansy na krzak
-                        bush_sprite = Sprite(bush_image, x * TILE_SIZE, y * TILE_SIZE)
+        self.sprites, self.tree_sprites = render_sprites( self.game_map.raw_map_data, self.tile_kinds, Sprite)
 
 
         player_start_x = self.game_map.width_px // 2
@@ -141,9 +104,9 @@ class Game:
                 elif event.type == pygame.KEYUP:
                     self.keys_down.discard(event.key)
                     self.player.handle_key_up(event.key)
-                    if event.key == pygame.K_e:
-                        self.check_chest_interactions()
-                        self.check_tree_interactions()
+                   # if event.key == pygame.K_e:
+                     #   self.check_chest_interactions()
+                     #   self.check_tree_interactions()
 
                     if event.key == pygame.K_UP:
                         self.camera.zoom = min(4.0, self.camera.zoom + 0.25)
