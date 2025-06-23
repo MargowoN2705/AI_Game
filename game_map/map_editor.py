@@ -31,8 +31,8 @@ class MapEditor:
         pygame.quit()
 
     def create_empty_map(self, width, height):
-        self.game_map.raw_map_data = [[7 for _ in range(width)] for _ in range(height)]
-        self.game_map.tiles = [[self.tile_kinds[7] for _ in range(width)] for _ in range(height)]
+        self.game_map.raw_map_data = [[0 for _ in range(width)] for _ in range(height)]
+        self.game_map.tiles = [[self.tile_kinds[0] for _ in range(width)] for _ in range(height)]
 
     def center_camera_on_map(self):
         map_width_px = len(self.game_map.raw_map_data[0]) * self.tile_size

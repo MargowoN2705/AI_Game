@@ -56,7 +56,7 @@ def main():
     screen_info = Info()
 
     editor = MapEditor(
-        map_path = "game_map/maps_storage/map_23.map",
+        map_path = "game_map/maps_storage/map_31.map",
 
         tile_image_data=tile_image_data,
         tile_size=32,
