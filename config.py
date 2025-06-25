@@ -35,7 +35,7 @@ GAME_CONFIG = {
     "clear_color": (0, 0, 0),
     "game_speed": 60,
     #"fullscreen": True,
-    "game_map": get_asset_path("game_map", "maps_storage", "map_30.map", own_path=True),
+    "game_map": get_asset_path("game_map", "maps_storage", "map_32.map", own_path=True),
     #"game_map": get_asset_path("game_map", "maps_storage", "simple_map.map", own_path=True),
     "title": "GameAI",
     #"bush_spawn_chance": 0.15,
