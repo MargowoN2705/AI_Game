@@ -8,7 +8,6 @@ from .camera import Camera
 from config import get_asset_path, TILE_KINDS, GAME_CONFIG, TILE_SIZE
 from .item import Item, ItemEntity, Inventory
 from .team_manager import TeamManager
-from .renderer import render_sprites
 
 
 class Game:
@@ -38,9 +37,8 @@ class Game:
 
         self.game_map = Map(GAME_CONFIG["game_map"], self.tile_kinds)
 
-
-        self.sprites, self.tree_sprites = render_sprites( self.game_map.raw_map_data, self.tile_kinds, Sprite)
-
+        # tworzejnie sprites
+        self.sprites, self.tree_sprites = Sprite.from_tiles(self.game_map.raw_map_data, self.tile_kinds)
 
         player_start_x = self.game_map.width_px // 2
         player_start_y = self.game_map.height_px // 2
