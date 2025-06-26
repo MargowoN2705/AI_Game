@@ -73,7 +73,7 @@ class Map:
         map_width_tiles = len(self.tiles[0])
         map_height_tiles = len(self.tiles)
 
-        start_x, end_x, start_y, end_y = camera.get_visible_tile_range(TILE_SIZE, map_width_tiles,
+        start_x, end_x, start_y, end_y = camera.get_visible_tile_range(map_width_tiles,
                                                                        map_height_tiles)
 
         for y in range(start_y, end_y):

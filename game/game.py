@@ -8,7 +8,7 @@ from .camera import Camera
 from config import get_asset_path, TILE_KINDS, GAME_CONFIG, TILE_SIZE
 from .item import Item, ItemEntity, Inventory
 from .team_manager import TeamManager
-from .renderer import render_visible_area, render_sprites
+from .renderer import render_sprites
 
 
 class Game:
@@ -150,7 +150,23 @@ class Game:
 
             self.team_manager.update(dt)
 
-            render_visible_area(self.camera, self.game_map, self.screen, sprites)
+            #render_visible_area(self.camera, self.game_map, self.screen, sprites)
+            self.game_map.draw(self.screen, self.camera)
+
+            for s in sprites:
+
+                if hasattr(s, "picked_up") and s.picked_up:
+                    continue
+
+                # gdzie sie zaczyna i konczy Sprite:
+
+                left, top, right, bottom = s.get_bounds()
+
+                # Rysowanie Sprite gdy granica znajduje sie w zasiegu widzenia (kamery)
+                start_x, end_x, start_y, end_y = self.camera.get_visible_tile_range(len(self.game_map.tiles[0]),
+                                                                                    len(self.game_map.tiles))
+                if right >= start_x and left < end_x and bottom >= start_y and top < end_y:
+                    s.draw(self.screen, self.camera)
 
             self.player.draw_inventory(self.screen, self.player.inventory)
             self.camera.update()
