@@ -21,6 +21,8 @@ class MapEditor:
         self.center_camera_on_map()
         self.running = True
 
+        self.brush_size = 3
+
     def run(self):
         while self.running:
             self.clock.tick(60)
@@ -75,6 +77,10 @@ class MapEditor:
                     height = 32
                     self.create_empty_map(width, height)
                     print(f"[MapEditor] Stworzono nową mapę {width}x{height}")
+                elif event.key == pygame.K_LEFTBRACKET:
+                    self.brush_size = max(1, self.brush_size - 2)
+                elif event.key == pygame.K_RIGHTBRACKET:
+                    self.brush_size = min(15, self.brush_size + 2)
 
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
@@ -86,6 +92,7 @@ class MapEditor:
                 self.camera.zoom += event.y * 0.1
                 self.camera.zoom = max(0.5, min(self.camera.zoom, 3))  # ogranicz zoom od 0.5 do 3
                 print(f"Zoom: {self.camera.zoom:.2f}")
+
 
         if mouse_buttons[0]:
             if not self.check_tilebar_click():
@@ -116,9 +123,17 @@ class MapEditor:
         tx = int((mx / self.camera.zoom + self.camera.camera.x) // self.tile_size)
         ty = int((my / self.camera.zoom + self.camera.camera.y) // self.tile_size)
 
+        radius = self.brush_size // 2
+
         if 0 <= ty < len(self.game_map.raw_map_data) and 0 <= tx < len(self.game_map.raw_map_data[ty]):
-            self.game_map.raw_map_data[ty][tx] = self.selected_tile_index
-            self.game_map.tiles[ty][tx] = self.tile_kinds[self.selected_tile_index]
+            for dy in range(-radius, radius + 1):
+                for dx in range(-radius, radius + 1):
+                    xt = tx + dx
+                    yt = ty + dy
+
+                    if 0 <= yt < len(self.game_map.raw_map_data) and 0 <= xt < len(self.game_map.raw_map_data[yt]):
+                        self.game_map.raw_map_data[yt][xt] = self.selected_tile_index
+                        self.game_map.tiles[yt][xt] = self.tile_kinds[self.selected_tile_index]
         else:
             print(f"[MapEditor] Kliknięto poza mapą: tx={tx}, ty={ty}")
 
@@ -154,9 +169,23 @@ class MapEditor:
             if i == self.selected_tile_index:
                 pygame.draw.rect(self.screen, (255, 255, 0), (x, y, self.tile_size, self.tile_size), 2)
 
+        mx, my = pygame.mouse.get_pos()
+        tx = int((mx / self.camera.zoom + self.camera.camera.x) // self.tile_size)
+        ty = int((my / self.camera.zoom + self.camera.camera.y) // self.tile_size)
 
+        half_brush = self.brush_size // 2
 
+        for dy in range(-half_brush, half_brush + 1):
+            for dx in range(-half_brush, half_brush + 1):
+                bx = tx + dx
+                by = ty + dy
 
+                if 0 <= by < len(self.game_map.raw_map_data) and 0 <= bx < len(self.game_map.raw_map_data[0]):
+                    screen_x = (bx * self.tile_size - self.camera.camera.x) * self.camera.zoom
+                    screen_y = (by * self.tile_size - self.camera.camera.y) * self.camera.zoom
+                    rect = pygame.Rect(screen_x, screen_y, self.tile_size * self.camera.zoom,
+                                       self.tile_size * self.camera.zoom)
+                    pygame.draw.rect(self.screen, (255, 255, 0), rect, 1)  # żółty kontur
 
 
 
