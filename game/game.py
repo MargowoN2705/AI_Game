@@ -109,11 +109,11 @@ class Game:
                      #   self.check_tree_interactions()
 
                     if event.key == pygame.K_UP:
-                        self.camera.zoom = min(4.0, self.camera.zoom + 0.25)
+                        self.camera.zoom = min(GAME_CONFIG['zoom_max'], self.camera.zoom + GAME_CONFIG['zoom_step'])
                         self.game_map.rescale_tiles(self.camera.zoom)
 
                     if event.key == pygame.K_DOWN:
-                        self.camera.zoom = max(0.25, self.camera.zoom - 0.25)
+                        self.camera.zoom = max(GAME_CONFIG['zoom_min'], self.camera.zoom - GAME_CONFIG['zoom_step'])
                         self.game_map.rescale_tiles(self.camera.zoom)
 
                     if event.key == pygame.K_q:

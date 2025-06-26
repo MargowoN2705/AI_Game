@@ -35,13 +35,13 @@ GAME_CONFIG = {
     "clear_color": (0, 0, 0),
     "game_speed": 60,
     #"fullscreen": True,
-    "game_map": get_asset_path("game_map", "maps_storage", "map_32.map", own_path=True),
+    "game_map": get_asset_path("game_map", "maps_storage", "map_61.map", own_path=True),
     #"game_map": get_asset_path("game_map", "maps_storage", "simple_map.map", own_path=True),
     "title": "GameAI",
     #"bush_spawn_chance": 0.15,
-    #"zoom_step": 0.25,
-    #"zoom_max": 4.0,
-    #"zoom_min": 0.25,
+    "zoom_step": 0.25,
+    "zoom_max": 4.0,
+    "zoom_min": 0.25,
 }
 
 TILE_KINDS = [
