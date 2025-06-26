@@ -122,12 +122,6 @@ class MapEditor:
         else:
             print(f"[MapEditor] Kliknięto poza mapą: tx={tx}, ty={ty}")
 
-        if 0 <= ty < len(self.game_map.raw_map_data) and 0 <= tx < len(self.game_map.raw_map_data[ty]):
-            self.game_map.raw_map_data[ty][tx] = self.selected_tile_index
-            self.game_map.tiles[ty][tx] = self.tile_kinds[self.selected_tile_index]
-        else:
-            print(f"[MapEditor] Kliknięto poza mapą: tx={tx}, ty={ty}")
-
     def save_map(self):
         with open(self.map_path, "w") as f:
             for row in self.game_map.raw_map_data:
