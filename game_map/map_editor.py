@@ -56,6 +56,8 @@ class MapEditor:
 
 
     def handle_events(self):
+        mouse_buttons = pygame.mouse.get_pressed()
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
@@ -84,6 +86,10 @@ class MapEditor:
                 self.camera.zoom += event.y * 0.1
                 self.camera.zoom = max(0.5, min(self.camera.zoom, 3))  # ogranicz zoom od 0.5 do 3
                 print(f"Zoom: {self.camera.zoom:.2f}")
+
+        if mouse_buttons[0]:
+            if not self.check_tilebar_click():
+                self.place_tile()
 
         # Ruch kamery (strzałki lub WASD)
         keys = pygame.key.get_pressed()
