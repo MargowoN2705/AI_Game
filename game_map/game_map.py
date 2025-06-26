@@ -39,7 +39,6 @@ class Map:
     def __init__(self, map_file, tile_kinds):
         self.tiles = []
         self.raw_map_data = []
-        self.scaled_tiles = []  # dla cull rendering (w budowie)
         #self.width_px
         #self.height_px
 
@@ -110,15 +109,3 @@ class Map:
                             new_rect.top = tile_rect.bottom
         rect.y = new_rect.y
         return rect.x, rect.y
-
-    # do optymalizacji wyswietlania
-    def rescale_tiles(self, zoom):
-        self.scaled_tiles = []
-        for row in self.tiles:
-            scaled_row = []
-            for tile in row:
-                w = int(tile.image.get_width() * zoom)
-                h = int(tile.image.get_height() * zoom)
-                scaled_image = pygame.transform.scale(tile.image, (w, h))
-                scaled_row.append(scaled_image)
-            self.scaled_tiles.append(scaled_row)

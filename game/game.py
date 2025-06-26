@@ -62,8 +62,6 @@ class Game:
             # ItemEntity(self.items[1], (10, 3)),
         ]
 
-        self.game_map.rescale_tiles(self.camera.zoom) # ladowanie w inicie przeskalowanych obrazkow (lepsza wydajnosc)
-
         self.reset_game()
 
     def check_chest_interactions(self):
@@ -110,11 +108,9 @@ class Game:
 
                     if event.key == pygame.K_UP:
                         self.camera.zoom = min(GAME_CONFIG['zoom_max'], self.camera.zoom + GAME_CONFIG['zoom_step'])
-                        self.game_map.rescale_tiles(self.camera.zoom)
 
                     if event.key == pygame.K_DOWN:
                         self.camera.zoom = max(GAME_CONFIG['zoom_min'], self.camera.zoom - GAME_CONFIG['zoom_step'])
-                        self.game_map.rescale_tiles(self.camera.zoom)
 
                     if event.key == pygame.K_q:
                         dropped_item = self.player.inventory.drop_item()
