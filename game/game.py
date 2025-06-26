@@ -15,6 +15,7 @@ class Game:
     def __init__(self):
         pygame.init()
 
+        self.font = pygame.font.SysFont(None, 24)
 
         self.camera = Camera()
 
@@ -93,6 +94,7 @@ class Game:
 
         while running:
             clock.tick(self.GAME_SPEED)
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
@@ -168,6 +170,13 @@ class Game:
 
             self.player.draw_inventory(self.screen, self.player.inventory)
             self.camera.update()
+
+            fps = clock.get_fps()
+            fps_text = self.font.render(f"FPS: {int(fps)}", True, (255, 255, 255))
+            text_rect = fps_text.get_rect()
+            text_rect.topright = (self.screen.get_width() - 10, 10)
+
+            self.screen.blit(fps_text, text_rect)
 
             pygame.display.flip()
 
