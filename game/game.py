@@ -25,7 +25,7 @@ class Game:
         screen_width = infoObject.current_w
         screen_height = infoObject.current_h
 
-        self.camera.create_screen(screen_width, screen_height, GAME_CONFIG["title"], pygame.FULLSCREEN)
+        self.camera.resize_screen(screen_width, screen_height, pygame.FULLSCREEN)
 
         self.keys_down = set()
         self.GAME_SPEED = GAME_CONFIG['game_speed']

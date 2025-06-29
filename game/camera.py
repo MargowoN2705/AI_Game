@@ -10,13 +10,16 @@ class Camera:
         self.height = 0
         self.screen = None
 
-    def create_screen(self, width, height, title, mode):
+    def create_screen(self, width, height, title="title", mode=0):
         pygame.display.set_caption(title)
         self.screen = pygame.display.set_mode((width, height), mode)
         self.width = width
         self.height = height
         self.camera.width = width
         self.camera.height = height
+
+    def resize_screen(self, width, height, mode=0):
+        self.create_screen(width, height,"s", mode)  # ponownie ustawia screen
 
     def apply(self, pos):
         x, y = pos
