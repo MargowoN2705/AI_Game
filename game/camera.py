@@ -8,15 +8,15 @@ class Camera:
         self.zoom = CAMERA_ZOOM
         self.width = 0
         self.height = 0
+        self.screen = None
 
     def create_screen(self, width, height, title, mode):
         pygame.display.set_caption(title)
-        screen = pygame.display.set_mode((width, height), mode)
+        self.screen = pygame.display.set_mode((width, height), mode)
         self.width = width
         self.height = height
         self.camera.width = width
         self.camera.height = height
-        return screen
 
     def apply(self, pos):
         x, y = pos

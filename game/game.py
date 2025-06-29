@@ -12,7 +12,7 @@ from .team_manager import TeamManager
 
 class Game:
 
-    def __init__(self):
+    def __init__(self, ):
         pygame.init()
 
         self.font = pygame.font.SysFont(None, 24)
@@ -25,7 +25,7 @@ class Game:
         screen_width = infoObject.current_w
         screen_height = infoObject.current_h
 
-        self.screen = self.camera.create_screen(screen_width, screen_height, GAME_CONFIG["title"], pygame.FULLSCREEN)
+        self.camera.create_screen(screen_width, screen_height, GAME_CONFIG["title"], pygame.FULLSCREEN)
 
         self.keys_down = set()
         self.GAME_SPEED = GAME_CONFIG['game_speed']
@@ -142,12 +142,12 @@ class Game:
 
             dt = clock.tick(60) / 1000
 
-            self.screen.fill(self.clear_color)  # <-- czyść ekran na samym początku!
+            self.camera.screen.fill(self.clear_color)  # <-- czyść ekran na samym początku!
 
             self.team_manager.update(dt)
 
             #render_visible_area(self.camera, self.game_map, self.screen, sprites)
-            self.game_map.draw(self.screen, self.camera)
+            self.game_map.draw(self.camera.screen, self.camera)
 
             for s in sprites:
 
@@ -162,17 +162,17 @@ class Game:
                 start_x, end_x, start_y, end_y = self.camera.get_visible_tile_range(len(self.game_map.tiles[0]),
                                                                                     len(self.game_map.tiles))
                 if right >= start_x and left < end_x and bottom >= start_y and top < end_y:
-                    s.draw(self.screen, self.camera)
+                    s.draw(self.camera.screen, self.camera)
 
-            self.player.draw_inventory(self.screen, self.player.inventory)
+            self.player.draw_inventory(self.camera.screen, self.player.inventory)
             self.camera.update()
 
             fps = clock.get_fps()
             fps_text = self.font.render(f"FPS: {int(fps)}", True, (255, 255, 255))
             text_rect = fps_text.get_rect()
-            text_rect.topright = (self.screen.get_width() - 10, 10)
+            text_rect.topright = (self.camera.screen.get_width() - 10, 10)
 
-            self.screen.blit(fps_text, text_rect)
+            self.camera.screen.blit(fps_text, text_rect)
 
             pygame.display.flip()
 

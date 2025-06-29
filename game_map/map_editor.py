@@ -10,7 +10,8 @@ class MapEditor:
         self.tile_size = tile_size
 
         self.camera = Camera()
-        self.screen = self.camera.create_screen(screen_width, screen_height, "game_map Editor", 0)
+        self.camera.create_screen(screen_width, screen_height, "game_map Editor", 0)
+
         self.clock = pygame.time.Clock()
 
 
@@ -45,7 +46,7 @@ class MapEditor:
 
     def check_tilebar_click(self):
         mx, my = pygame.mouse.get_pos()
-        tilebar_y = self.screen.get_height() - self.tile_size - 10
+        tilebar_y = self.camera.screen.get_height() - self.tile_size - 10
 
         if my >= tilebar_y:
             for i in range(len(self.tile_kinds)):
@@ -153,21 +154,21 @@ class MapEditor:
         return raw_map_data
 
     def draw(self):
-        self.screen.fill((0, 0, 0))
-        self.game_map.draw(self.screen, self.camera)
+        self.camera.screen.fill((0, 0, 0))
+        self.game_map.draw(self.camera.screen, self.camera)
 
 
-        self.screen.blit(self.tile_kinds[self.selected_tile_index].image, (10, 10))
+        self.camera.screen.blit(self.tile_kinds[self.selected_tile_index].image, (10, 10))
 
 
         for i, tile in enumerate(self.tile_kinds):
             x = i * (self.tile_size + 4) + 10
-            y = self.screen.get_height() - self.tile_size - 10
-            self.screen.blit(tile.image, (x, y))
+            y = self.camera.screen.get_height() - self.tile_size - 10
+            self.camera.screen.blit(tile.image, (x, y))
 
 
             if i == self.selected_tile_index:
-                pygame.draw.rect(self.screen, (255, 255, 0), (x, y, self.tile_size, self.tile_size), 2)
+                pygame.draw.rect(self.camera.screen, (255, 255, 0), (x, y, self.tile_size, self.tile_size), 2)
 
         mx, my = pygame.mouse.get_pos()
         tx = int((mx / self.camera.zoom + self.camera.camera.x) // self.tile_size)
@@ -185,7 +186,7 @@ class MapEditor:
                     screen_y = (by * self.tile_size - self.camera.camera.y) * self.camera.zoom
                     rect = pygame.Rect(screen_x, screen_y, self.tile_size * self.camera.zoom,
                                        self.tile_size * self.camera.zoom)
-                    pygame.draw.rect(self.screen, (255, 255, 0), rect, 1)  # żółty kontur
+                    pygame.draw.rect(self.camera.screen, (255, 255, 0), rect, 1)  # żółty kontur
 
 
 
